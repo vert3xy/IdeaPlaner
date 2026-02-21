@@ -172,10 +172,6 @@
                 </div>
             `;
             
-            // Не забудь кнопку удаления в плейсхолдер, если он есть в HTML
-            if (delPlaceholder) {
-                delPlaceholder.innerHTML = `<button onclick="deleteIdea(${idea.id}); closeDetail();" class="text-rose-500 text-sm font-medium hover:bg-rose-50 px-3 py-1 rounded-lg transition"><i class="fa-solid fa-trash-can mr-2"></i>Удалить</button>`;
-            }
 
             document.getElementById('detailModal').classList.remove('hidden');
         }

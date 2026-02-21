@@ -2963,3 +2963,577 @@ WHERE users.username = ?
  LIMIT ? OFFSET ?
 2026-02-21 18:50:24,056 [INFO] sqlalchemy.engine.Engine: [cached since 264.8s ago] ('admin', 1, 0)
 2026-02-21 18:50:24,058 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:02:18,167 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:02:18,168 [INFO] sqlalchemy.engine.Engine: PRAGMA main.table_info("users")
+2026-02-21 19:02:18,168 [INFO] sqlalchemy.engine.Engine: [raw sql] ()
+2026-02-21 19:02:18,169 [INFO] sqlalchemy.engine.Engine: PRAGMA main.table_info("ideas")
+2026-02-21 19:02:18,170 [INFO] sqlalchemy.engine.Engine: [raw sql] ()
+2026-02-21 19:02:18,170 [INFO] sqlalchemy.engine.Engine: COMMIT
+2026-02-21 19:02:52,493 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:02:52,504 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:02:52,504 [INFO] sqlalchemy.engine.Engine: [generated in 0.00315s] ('nika', 1, 0)
+2026-02-21 19:02:52,964 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:02:53,089 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:02:53,091 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:02:53,092 [INFO] sqlalchemy.engine.Engine: [cached since 0.5917s ago] ('nika', 1, 0)
+2026-02-21 19:02:53,591 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:02:53,628 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:02:53,629 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:02:53,630 [INFO] sqlalchemy.engine.Engine: [cached since 1.129s ago] ('nika', 1, 0)
+2026-02-21 19:02:53,635 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:02:53,637 [INFO] sqlalchemy.engine.Engine: [generated in 0.00233s] (100, 0)
+2026-02-21 19:02:53,644 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:02:53,704 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:02:53,707 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:02:53,707 [INFO] sqlalchemy.engine.Engine: [cached since 1.206s ago] ('nika', 1, 0)
+2026-02-21 19:02:53,710 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:06:00,576 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:06:00,578 [INFO] sqlalchemy.engine.Engine: PRAGMA main.table_info("users")
+2026-02-21 19:06:00,578 [INFO] sqlalchemy.engine.Engine: [raw sql] ()
+2026-02-21 19:06:00,580 [INFO] sqlalchemy.engine.Engine: PRAGMA main.table_info("ideas")
+2026-02-21 19:06:00,581 [INFO] sqlalchemy.engine.Engine: [raw sql] ()
+2026-02-21 19:06:00,582 [INFO] sqlalchemy.engine.Engine: COMMIT
+2026-02-21 19:06:02,921 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:06:02,922 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:06:02,926 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:06:02,926 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:06:02,927 [INFO] sqlalchemy.engine.Engine: [cached since 0.001316s ago] ('nika', 1, 0)
+2026-02-21 19:06:02,928 [INFO] sqlalchemy.engine.Engine: [generated in 0.00173s] ('nika', 1, 0)
+2026-02-21 19:06:02,935 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:06:02,937 [INFO] sqlalchemy.engine.Engine: [generated in 0.00199s] (100, 0)
+2026-02-21 19:06:02,943 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:06:02,944 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:06:24,360 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:06:24,364 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:06:24,364 [INFO] sqlalchemy.engine.Engine: [cached since 21.44s ago] ('Admin', 1, 0)
+2026-02-21 19:06:24,366 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:06:32,511 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:06:32,514 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:06:32,514 [INFO] sqlalchemy.engine.Engine: [cached since 29.59s ago] ('admin', 1, 0)
+2026-02-21 19:06:32,887 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:06:33,385 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:06:33,386 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:06:33,386 [INFO] sqlalchemy.engine.Engine: [cached since 30.46s ago] ('admin', 1, 0)
+2026-02-21 19:06:33,389 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:06:33,390 [INFO] sqlalchemy.engine.Engine: [cached since 30.45s ago] (100, 0)
+2026-02-21 19:06:33,395 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:06:33,747 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:06:33,748 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:06:33,748 [INFO] sqlalchemy.engine.Engine: [cached since 30.82s ago] ('admin', 1, 0)
+2026-02-21 19:06:33,752 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:07:11,908 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:07:11,909 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:07:11,911 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:07:11,912 [INFO] sqlalchemy.engine.Engine: [cached since 68.99s ago] ('nika', 1, 0)
+2026-02-21 19:07:11,910 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:07:11,912 [INFO] sqlalchemy.engine.Engine: [cached since 68.99s ago] ('nika', 1, 0)
+2026-02-21 19:07:11,915 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:07:11,915 [INFO] sqlalchemy.engine.Engine: [cached since 68.98s ago] (100, 0)
+2026-02-21 19:07:11,918 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:07:11,919 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:07:18,474 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:07:18,475 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:07:18,475 [INFO] sqlalchemy.engine.Engine: [cached since 75.55s ago] ('admin', 1, 0)
+2026-02-21 19:07:18,478 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas 
+WHERE ideas.idea_type = ? ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:07:18,479 [INFO] sqlalchemy.engine.Engine: [generated in 0.00060s] ('Entertainment', 100, 0)
+2026-02-21 19:07:18,483 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:07:20,517 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:07:20,518 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:07:20,518 [INFO] sqlalchemy.engine.Engine: [cached since 77.59s ago] ('admin', 1, 0)
+2026-02-21 19:07:20,520 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas 
+WHERE ideas.idea_type = ? ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:07:20,521 [INFO] sqlalchemy.engine.Engine: [cached since 2.043s ago] ('Culture', 100, 0)
+2026-02-21 19:07:20,523 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:07:21,317 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:07:21,318 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:07:21,318 [INFO] sqlalchemy.engine.Engine: [cached since 78.39s ago] ('admin', 1, 0)
+2026-02-21 19:07:21,319 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas 
+WHERE ideas.idea_type = ? ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:07:21,320 [INFO] sqlalchemy.engine.Engine: [cached since 2.842s ago] ('Food & Drink', 100, 0)
+2026-02-21 19:07:21,321 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:07:21,986 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:07:21,987 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:07:21,987 [INFO] sqlalchemy.engine.Engine: [cached since 79.06s ago] ('admin', 1, 0)
+2026-02-21 19:07:21,988 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas 
+WHERE ideas.idea_type = ? ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:07:21,989 [INFO] sqlalchemy.engine.Engine: [cached since 3.511s ago] ('Active Recreation', 100, 0)
+2026-02-21 19:07:21,990 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:07:23,620 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:07:23,621 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:07:23,621 [INFO] sqlalchemy.engine.Engine: [cached since 80.69s ago] ('admin', 1, 0)
+2026-02-21 19:07:23,622 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas 
+WHERE ideas.idea_type = ? ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:07:23,623 [INFO] sqlalchemy.engine.Engine: [cached since 5.144s ago] ('Home Leisure', 100, 0)
+2026-02-21 19:07:23,624 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:07:24,187 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:07:24,190 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:07:24,190 [INFO] sqlalchemy.engine.Engine: [cached since 81.26s ago] ('admin', 1, 0)
+2026-02-21 19:07:24,192 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas 
+WHERE ideas.idea_type = ? ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:07:24,193 [INFO] sqlalchemy.engine.Engine: [cached since 5.715s ago] ('Travel', 100, 0)
+2026-02-21 19:07:24,197 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:07:25,606 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:07:25,613 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:07:25,613 [INFO] sqlalchemy.engine.Engine: [cached since 82.69s ago] ('admin', 1, 0)
+2026-02-21 19:07:25,620 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas 
+WHERE ideas.idea_type = ? ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:07:25,623 [INFO] sqlalchemy.engine.Engine: [cached since 7.145s ago] ('Gifts & Surprises', 100, 0)
+2026-02-21 19:07:25,638 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:07:30,592 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:07:30,594 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:07:30,594 [INFO] sqlalchemy.engine.Engine: [cached since 87.67s ago] ('admin', 1, 0)
+2026-02-21 19:07:30,596 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas 
+WHERE ideas.idea_type = ? ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:07:30,597 [INFO] sqlalchemy.engine.Engine: [cached since 12.12s ago] ('Learning / Development', 100, 0)
+2026-02-21 19:07:30,600 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:07:32,448 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:07:32,450 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:07:32,452 [INFO] sqlalchemy.engine.Engine: [cached since 89.52s ago] ('admin', 1, 0)
+2026-02-21 19:07:32,456 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:07:32,456 [INFO] sqlalchemy.engine.Engine: [cached since 89.52s ago] (100, 0)
+2026-02-21 19:07:32,461 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:08:26,696 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:08:26,698 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:08:26,698 [INFO] sqlalchemy.engine.Engine: [cached since 143.8s ago] ('admin', 1, 0)
+2026-02-21 19:08:26,700 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:08:26,700 [INFO] sqlalchemy.engine.Engine: [cached since 143.8s ago] (100, 0)
+2026-02-21 19:08:26,703 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:08:26,813 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:08:26,815 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:08:26,815 [INFO] sqlalchemy.engine.Engine: [cached since 143.9s ago] ('admin', 1, 0)
+2026-02-21 19:08:26,820 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:08:29,432 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:08:29,434 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:08:29,435 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:08:29,435 [INFO] sqlalchemy.engine.Engine: [cached since 146.5s ago] ('admin', 1, 0)
+2026-02-21 19:08:29,437 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:08:29,437 [INFO] sqlalchemy.engine.Engine: [cached since 146.5s ago] ('admin', 1, 0)
+2026-02-21 19:08:29,440 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:08:29,440 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:08:29,441 [INFO] sqlalchemy.engine.Engine: [cached since 146.5s ago] (100, 0)
+2026-02-21 19:08:29,444 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:08:43,014 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:08:43,019 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:08:43,019 [INFO] sqlalchemy.engine.Engine: [cached since 160.1s ago] ('nika', 1, 0)
+2026-02-21 19:08:43,380 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:08:43,740 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:08:43,741 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:08:43,742 [INFO] sqlalchemy.engine.Engine: [cached since 160.8s ago] ('nika', 1, 0)
+2026-02-21 19:08:43,743 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:08:43,744 [INFO] sqlalchemy.engine.Engine: [cached since 160.8s ago] (100, 0)
+2026-02-21 19:08:43,746 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:08:43,833 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:08:43,836 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:08:43,836 [INFO] sqlalchemy.engine.Engine: [cached since 160.9s ago] ('nika', 1, 0)
+2026-02-21 19:08:43,839 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:08:51,729 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:08:51,730 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:08:51,730 [INFO] sqlalchemy.engine.Engine: [cached since 168.8s ago] ('nika', 1, 0)
+2026-02-21 19:08:52,081 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:08:52,569 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:08:52,571 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:08:52,571 [INFO] sqlalchemy.engine.Engine: [cached since 169.6s ago] ('nika', 1, 0)
+2026-02-21 19:08:52,574 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:08:52,575 [INFO] sqlalchemy.engine.Engine: [cached since 169.6s ago] (100, 0)
+2026-02-21 19:08:52,580 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:08:52,639 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:08:52,641 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:08:52,641 [INFO] sqlalchemy.engine.Engine: [cached since 169.7s ago] ('nika', 1, 0)
+2026-02-21 19:08:52,644 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:10:02,123 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:10:02,125 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:10:02,128 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:02,130 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:02,131 [INFO] sqlalchemy.engine.Engine: [cached since 239.2s ago] ('nika', 1, 0)
+2026-02-21 19:10:02,131 [INFO] sqlalchemy.engine.Engine: [cached since 239.2s ago] ('nika', 1, 0)
+2026-02-21 19:10:02,138 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:02,140 [INFO] sqlalchemy.engine.Engine: [cached since 239.2s ago] (100, 0)
+2026-02-21 19:10:02,144 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:10:02,145 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:10:03,780 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:10:03,782 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:03,782 [INFO] sqlalchemy.engine.Engine: [cached since 240.9s ago] ('nika', 1, 0)
+2026-02-21 19:10:03,784 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas 
+WHERE ideas.idea_type = ? ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:03,786 [INFO] sqlalchemy.engine.Engine: [cached since 165.3s ago] ('Active Recreation', 100, 0)
+2026-02-21 19:10:03,789 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:10:04,284 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:10:04,284 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:04,285 [INFO] sqlalchemy.engine.Engine: [cached since 241.4s ago] ('nika', 1, 0)
+2026-02-21 19:10:04,286 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas 
+WHERE ideas.idea_type = ? ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:04,286 [INFO] sqlalchemy.engine.Engine: [cached since 165.8s ago] ('Home Leisure', 100, 0)
+2026-02-21 19:10:04,288 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:10:04,754 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:10:04,755 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:04,755 [INFO] sqlalchemy.engine.Engine: [cached since 241.8s ago] ('nika', 1, 0)
+2026-02-21 19:10:04,757 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas 
+WHERE ideas.idea_type = ? ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:04,757 [INFO] sqlalchemy.engine.Engine: [cached since 166.3s ago] ('Travel', 100, 0)
+2026-02-21 19:10:04,759 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:10:05,157 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:10:05,158 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:05,158 [INFO] sqlalchemy.engine.Engine: [cached since 242.2s ago] ('nika', 1, 0)
+2026-02-21 19:10:05,160 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas 
+WHERE ideas.idea_type = ? ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:05,161 [INFO] sqlalchemy.engine.Engine: [cached since 166.7s ago] ('Gifts & Surprises', 100, 0)
+2026-02-21 19:10:05,163 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:10:05,638 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:10:05,639 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:05,639 [INFO] sqlalchemy.engine.Engine: [cached since 242.7s ago] ('nika', 1, 0)
+2026-02-21 19:10:05,641 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas 
+WHERE ideas.idea_type = ? ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:05,641 [INFO] sqlalchemy.engine.Engine: [cached since 167.2s ago] ('Learning / Development', 100, 0)
+2026-02-21 19:10:05,644 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:10:07,313 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:10:07,314 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:07,314 [INFO] sqlalchemy.engine.Engine: [cached since 244.4s ago] ('nika', 1, 0)
+2026-02-21 19:10:07,316 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:07,318 [INFO] sqlalchemy.engine.Engine: [cached since 244.4s ago] (100, 0)
+2026-02-21 19:10:07,321 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:10:13,982 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:10:13,983 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:13,984 [INFO] sqlalchemy.engine.Engine: [cached since 251.1s ago] ('nika', 1, 0)
+2026-02-21 19:10:13,988 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:13,990 [INFO] sqlalchemy.engine.Engine: [cached since 251.1s ago] (100, 0)
+2026-02-21 19:10:13,995 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:10:14,084 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:10:14,085 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:14,085 [INFO] sqlalchemy.engine.Engine: [cached since 251.2s ago] ('nika', 1, 0)
+2026-02-21 19:10:14,087 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:10:15,827 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:10:15,830 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:15,831 [INFO] sqlalchemy.engine.Engine: [cached since 252.9s ago] ('nika', 1, 0)
+2026-02-21 19:10:15,834 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas 
+WHERE ideas.idea_type = ? ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:15,835 [INFO] sqlalchemy.engine.Engine: [cached since 177.4s ago] ('Culture', 100, 0)
+2026-02-21 19:10:15,839 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:10:16,888 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:10:16,891 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:16,891 [INFO] sqlalchemy.engine.Engine: [cached since 254s ago] ('nika', 1, 0)
+2026-02-21 19:10:16,896 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas 
+WHERE ideas.idea_type = ? ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:16,897 [INFO] sqlalchemy.engine.Engine: [cached since 178.4s ago] ('Food & Drink', 100, 0)
+2026-02-21 19:10:16,900 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:10:17,443 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:10:17,444 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:17,444 [INFO] sqlalchemy.engine.Engine: [cached since 254.5s ago] ('nika', 1, 0)
+2026-02-21 19:10:17,445 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas 
+WHERE ideas.idea_type = ? ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:17,446 [INFO] sqlalchemy.engine.Engine: [cached since 179s ago] ('Active Recreation', 100, 0)
+2026-02-21 19:10:17,448 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:10:19,628 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:10:19,630 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:19,630 [INFO] sqlalchemy.engine.Engine: [cached since 256.7s ago] ('nika', 1, 0)
+2026-02-21 19:10:19,632 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas 
+WHERE ideas.idea_type = ? ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:19,632 [INFO] sqlalchemy.engine.Engine: [cached since 181.2s ago] ('Travel', 100, 0)
+2026-02-21 19:10:19,635 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:10:20,832 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:10:20,832 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:20,832 [INFO] sqlalchemy.engine.Engine: [cached since 257.9s ago] ('nika', 1, 0)
+2026-02-21 19:10:20,834 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas 
+WHERE ideas.idea_type = ? ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:20,834 [INFO] sqlalchemy.engine.Engine: [cached since 182.4s ago] ('Home Leisure', 100, 0)
+2026-02-21 19:10:20,835 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:10:22,109 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:10:22,110 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:22,111 [INFO] sqlalchemy.engine.Engine: [cached since 259.2s ago] ('nika', 1, 0)
+2026-02-21 19:10:22,112 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas 
+WHERE ideas.idea_type = ? ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:22,112 [INFO] sqlalchemy.engine.Engine: [cached since 183.6s ago] ('Gifts & Surprises', 100, 0)
+2026-02-21 19:10:22,114 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:10:22,433 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:10:22,433 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:22,434 [INFO] sqlalchemy.engine.Engine: [cached since 259.5s ago] ('nika', 1, 0)
+2026-02-21 19:10:22,435 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas 
+WHERE ideas.idea_type = ? ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:10:22,436 [INFO] sqlalchemy.engine.Engine: [cached since 184s ago] ('Learning / Development', 100, 0)
+2026-02-21 19:10:22,438 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:13:59,937 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:13:59,940 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:13:59,938 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:13:59,942 [INFO] sqlalchemy.engine.Engine: [cached since 477s ago] ('nika', 1, 0)
+2026-02-21 19:13:59,942 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:13:59,943 [INFO] sqlalchemy.engine.Engine: [cached since 477s ago] ('nika', 1, 0)
+2026-02-21 19:13:59,947 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:13:59,947 [INFO] sqlalchemy.engine.Engine: [cached since 477s ago] (100, 0)
+2026-02-21 19:13:59,952 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:13:59,953 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:16:21,702 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:16:21,703 [INFO] sqlalchemy.engine.Engine: PRAGMA main.table_info("users")
+2026-02-21 19:16:21,704 [INFO] sqlalchemy.engine.Engine: [raw sql] ()
+2026-02-21 19:16:21,705 [INFO] sqlalchemy.engine.Engine: PRAGMA main.table_info("ideas")
+2026-02-21 19:16:21,706 [INFO] sqlalchemy.engine.Engine: [raw sql] ()
+2026-02-21 19:16:21,706 [INFO] sqlalchemy.engine.Engine: COMMIT
+2026-02-21 19:16:47,160 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:16:47,160 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:16:47,165 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:16:47,166 [INFO] sqlalchemy.engine.Engine: [cached since 0.001567s ago] ('nika', 1, 0)
+2026-02-21 19:16:47,164 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:16:47,168 [INFO] sqlalchemy.engine.Engine: [generated in 0.00354s] ('nika', 1, 0)
+2026-02-21 19:16:47,176 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:16:47,176 [INFO] sqlalchemy.engine.Engine: [generated in 0.00104s] (100, 0)
+2026-02-21 19:16:47,179 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:16:47,182 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:16:48,093 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:16:48,095 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:16:48,096 [INFO] sqlalchemy.engine.Engine: [cached since 0.9322s ago] ('nika', 1, 0)
+2026-02-21 19:16:48,101 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas 
+WHERE ideas.idea_type = ? ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:16:48,101 [INFO] sqlalchemy.engine.Engine: [generated in 0.00051s] ('Culture', 100, 0)
+2026-02-21 19:16:48,105 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:16:48,911 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:16:48,912 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:16:48,912 [INFO] sqlalchemy.engine.Engine: [cached since 1.748s ago] ('nika', 1, 0)
+2026-02-21 19:16:48,915 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas 
+WHERE ideas.idea_type = ? ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:16:48,915 [INFO] sqlalchemy.engine.Engine: [cached since 0.8148s ago] ('Food & Drink', 100, 0)
+2026-02-21 19:16:48,918 [INFO] sqlalchemy.engine.Engine: ROLLBACK
+2026-02-21 19:16:49,422 [INFO] sqlalchemy.engine.Engine: BEGIN (implicit)
+2026-02-21 19:16:49,423 [INFO] sqlalchemy.engine.Engine: SELECT users.id AS users_id, users.username AS users_username, users.password_hash AS users_password_hash 
+FROM users 
+WHERE users.username = ?
+ LIMIT ? OFFSET ?
+2026-02-21 19:16:49,423 [INFO] sqlalchemy.engine.Engine: [cached since 2.259s ago] ('nika', 1, 0)
+2026-02-21 19:16:49,425 [INFO] sqlalchemy.engine.Engine: SELECT ideas.id AS ideas_id, ideas.author_id AS ideas_author_id, ideas.title AS ideas_title, ideas.description AS ideas_description, ideas.idea_type AS ideas_idea_type, ideas.status AS ideas_status, ideas.attributes AS ideas_attributes, ideas.created_at AS ideas_created_at, ideas.updated_at AS ideas_updated_at 
+FROM ideas 
+WHERE ideas.idea_type = ? ORDER BY ideas.created_at DESC
+ LIMIT ? OFFSET ?
+2026-02-21 19:16:49,425 [INFO] sqlalchemy.engine.Engine: [cached since 1.325s ago] ('Active Recreation', 100, 0)
+2026-02-21 19:16:49,427 [INFO] sqlalchemy.engine.Engine: ROLLBACK

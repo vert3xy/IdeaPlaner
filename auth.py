@@ -2,9 +2,14 @@ import bcrypt
 from datetime import datetime, timedelta
 from jose import jwt
 
-SECRET_KEY = "super-secret-key-for-our-app"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7
+import os
+from dotenv import load_dotenv
+
+load_dotenv() # Загружает переменные из .env
+
+SECRET_KEY = os.getenv("SECRET_KEY")
+ALGORITHM = os.getenv("ALGORITHM")
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
 def get_password_hash(password: str):
     pwd_bytes = password.encode('utf-8')
