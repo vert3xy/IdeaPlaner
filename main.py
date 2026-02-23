@@ -14,9 +14,9 @@ from sqlalchemy import or_
 from jose import jwt, JWTError
 
 import models, schemas, auth
-from database import engine, get_db
+from database import engine, get_db, Base
 
-from routers import ideas, auth
+from routers import ideas, auth, categories
 from auth import get_current_user
 
 logging.basicConfig(
@@ -47,8 +47,9 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 app.include_router(ideas.router)
 app.include_router(auth.router)
+app.include_router(categories.router)
 
-models.Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 

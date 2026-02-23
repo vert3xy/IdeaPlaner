@@ -1,13 +1,13 @@
-    <div class="max-w-6xl mx-auto px-4 py-6 overflow-x-auto no-scrollbar">
-        <div class="flex space-x-3" id="categoryFilters">
-            <button data-type="" onclick="loadIdeas('')" class="filter-btn px-6 py-2 bg-rose-500 text-white rounded-full shadow-md whitespace-nowrap">Все</button>
-            <button data-type="Entertainment" onclick="loadIdeas('Entertainment')" class="filter-btn px-5 py-2 bg-white text-slate-600 rounded-full border border-slate-100 whitespace-nowrap hover:bg-rose-50 transition">🎬 Развлечения</button>
-            <button data-type="Culture" onclick="loadIdeas('Culture')" class="filter-btn px-5 py-2 bg-white text-slate-600 rounded-full border border-slate-100 whitespace-nowrap hover:bg-rose-50 transition">🖼️ Культура</button>
-            <button data-type="Food & Drink" onclick="loadIdeas('Food & Drink')" class="filter-btn px-5 py-2 bg-white text-slate-600 rounded-full border border-slate-100 whitespace-nowrap hover:bg-rose-50 transition">🍕 Еда</button>
-            <button data-type="Active Recreation" onclick="loadIdeas('Active Recreation')" class="filter-btn px-5 py-2 bg-white text-slate-600 rounded-full border border-slate-100 whitespace-nowrap hover:bg-rose-50 transition">🏃‍♂️ Активности</button>
-            <button data-type="Home Leisure" onclick="loadIdeas('Home Leisure')" class="filter-btn px-5 py-2 bg-white text-slate-600 rounded-full border border-slate-100 whitespace-nowrap hover:bg-rose-50 transition">🏠 Дома</button>
-            <button data-type="Travel" onclick="loadIdeas('Travel')" class="filter-btn px-5 py-2 bg-white text-slate-600 rounded-full border border-slate-100 whitespace-nowrap hover:bg-rose-50 transition">✈️ Поездки</button>
-            <button data-type="Gifts & Surprises" onclick="loadIdeas('Gifts & Surprises')" class="filter-btn px-5 py-2 bg-white text-slate-600 rounded-full border border-slate-100 whitespace-nowrap hover:bg-rose-50 transition">🎁 Подарки</button>
-            <button data-type="Learning / Development" onclick="loadIdeas('Learning / Development')" class="filter-btn px-5 py-2 bg-white text-slate-600 rounded-full border border-slate-100 whitespace-nowrap hover:bg-rose-50 transition">🎓 Развитие</button>    
+<div class="max-w-6xl mx-auto px-4 py-6 overflow-x-auto no-scrollbar">
+    <div class="flex space-x-3" id="categoryFilters">
+        <button data-id="" onclick="loadIdeas()" class="filter-btn px-6 py-2 bg-rose-500 text-white rounded-full shadow-md whitespace-nowrap transition-all">
+            Все
+        </button>
+    </div>
+</div>
+<div id="subFiltersWrapper" class="max-w-6xl mx-auto px-4 pb-4 hidden">
+    <div class="flex flex-wrap gap-2 items-center">
+        <div id="subFiltersContainer" class="flex flex-wrap gap-2">
         </div>
     </div>
+</div>

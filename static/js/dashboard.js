@@ -4,128 +4,122 @@
         'done': { label: 'ГОТОВО', color: 'bg-emerald-500' },
         'rejected': { label: 'ОТКЛОНЕНО', color: 'bg-rose-500' }
     };
+    let categoriesData = [];
+    
+async function initFilters() {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('/categories', { 
+            headers: { 'Authorization': `Bearer ${token}` } 
+        });
+        
+        if (!response.ok) throw new Error("Не удалось загрузить категории");
 
-        function showDetail(idea) {
-            const content = document.getElementById('detailContent');
-            const delPlaceholder = document.getElementById('detailDeletePlaceholder');
-            
-            // 1. Сначала подготавливаем данные (перевод и цвет)
-            const s = statusMap[idea.status] || { label: idea.status, color: 'bg-slate-800' };
-            
-            let attrHtml = '';
-            for (const [key, value] of Object.entries(idea.attributes)) {
-                attrHtml += `
-                    <div class="flex justify-between py-3 border-b border-slate-100">
-                        <span class="text-slate-500 font-medium">${formatKey(key)}</span>
-                        <span class="text-slate-900 font-semibold text-right ml-4">${value}</span>
-                    </div>`;
+        // 1. Сохраняем данные глобально, чтобы функция renderAttributes могла их использовать
+        categoriesData = await response.json(); 
+
+        // --- БЛОК 1: ВЕРХНИЕ КНОПКИ-ФИЛЬТРЫ ---
+        const container = document.getElementById('categoryFilters');
+        
+        // Сохраняем кнопку "Все"
+        const allBtn = container.querySelector('[data-id=""]');
+        container.innerHTML = ''; // Полная очистка
+        if (allBtn) container.appendChild(allBtn);
+
+        categoriesData.forEach(cat => {
+            const btn = document.createElement('button');
+            btn.setAttribute('data-id', cat.id); // Теперь работаем по ID базы
+            btn.className = "filter-btn px-5 py-2 bg-white text-slate-600 rounded-full border border-slate-100 whitespace-nowrap hover:bg-rose-50 transition-all";
+            btn.onclick = () => loadIdeas(cat.id);
+            btn.innerHTML = `${cat.icon} ${cat.label}`;
+            container.appendChild(btn);
+        });
+
+        // --- БЛОК 2: ВЫПАДАЮЩИЙ СПИСОК В ФОРМЕ ДОБАВЛЕНИЯ ---
+        const formSelect = document.getElementById('formType');
+        if (formSelect) {
+            // Заполняем select категориями из базы
+            formSelect.innerHTML = categoriesData.map(cat => `
+                <option value="${cat.id}">${cat.icon} ${cat.label}</option>
+            `).join('');
+
+            // Сразу вызываем отрисовку полей для первой категории в списке
+            renderAttributes(); 
+        }
+
+    } catch (error) {
+        console.error("Критическая ошибка в initFilters:", error);
+    }
+}
+
+function formatValue(value) {
+    if (typeof value === 'boolean') return value ? 'Да' : 'Нет';
+    return value;
+}
+
+function showDetail(idea) {
+    const content = document.getElementById('detailContent');
+    if (!content) return;
+
+    const s = statusMap[idea.status] || { label: idea.status, color: 'bg-slate-800' };
+    
+    let attrHtml = '';
+    // Проверяем, есть ли вообще атрибуты в идее
+    if (idea.attributes) {
+        for (const [key, value] of Object.entries(idea.attributes)) {
+            // Безопасный поиск метки (label)
+            let label = key;
+            if (idea.category_ref && idea.category_ref.linked_attributes) {
+                const attrMetadata = idea.category_ref.linked_attributes.find(a => a.name === key);
+                if (attrMetadata) label = attrMetadata.label;
             }
 
-            // 2. Теперь вставляем уже готовые переменные в HTML
-            content.innerHTML = `
-                <div class="mb-6">
-                    <div class="flex justify-between items-start mb-6 pr-10">
-                        <span class="px-3 py-1 bg-indigo-50 text-indigo-500 text-[10px] font-bold rounded-full uppercase italic">
-                            ${idea.idea_type}
-                        </span>
-                        
-                        <div class="flex items-center space-x-4">
-                            <button onclick="deleteIdea(${idea.id}); closeDetail();" 
-                                    class="text-slate-300 hover:text-rose-500 transition-colors p-1">
-                                <i class="fa-solid fa-trash-can text-lg"></i>
-                            </button>
-                            
-                            <button onclick="openStatusModal(${idea.id}, '${idea.status}')" 
-                                    class="min-w-[130px] px-4 py-2.5 ${s.color} text-white text-[10px] font-black rounded-xl uppercase tracking-widest hover:brightness-110 transition-all shadow-md">
-                                ${s.label} <i class="fa-solid fa-chevron-down ml-2 text-[8px] opacity-70"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <h2 class="text-3xl font-bold text-slate-800 leading-tight">${idea.title}</h2>
-                    <p class="text-slate-600 mt-4 text-lg leading-relaxed">${idea.description || 'Описание отсутствует'}</p>
-                </div>
-                <div class="bg-slate-50 rounded-2xl p-6">
-                    <h4 class="text-sm font-bold text-slate-400 uppercase mb-4 tracking-widest text-center">Детали идеи</h4>
-                    ${attrHtml}
-                </div>
-            `;
-            
-
-            document.getElementById('detailModal').classList.remove('hidden');
+            attrHtml += `
+                <div class="flex justify-between py-3 border-b border-slate-100">
+                    <span class="text-slate-500 font-medium">${label}</span>
+                    <span class="text-slate-900 font-semibold text-right ml-4">
+                        ${formatValue(value)}
+                    </span>
+                </div>`;
         }
+    }
+
+    content.innerHTML = `
+        <div class="mb-6">
+            <div class="flex justify-between items-start mb-6 pr-10">
+                <span class="px-3 py-1 bg-indigo-50 text-indigo-500 text-[10px] font-bold rounded-full uppercase italic">
+                    ${idea.category_ref ? idea.category_ref.icon + ' ' + idea.category_ref.label : 'Без категории'}
+                </span>
+                
+                <div class="flex items-center space-x-4">
+                    <button onclick="deleteIdea(${idea.id}); closeDetail();" 
+                            class="text-slate-300 hover:text-rose-500 transition-colors p-1">
+                        <i class="fa-solid fa-trash-can text-lg"></i>
+                    </button>
+                    
+                    <button onclick="openStatusModal(${idea.id}, '${idea.status}')" 
+                            class="min-w-[130px] px-4 py-2.5 ${s.color} text-white text-[10px] font-black rounded-xl uppercase tracking-widest hover:brightness-110 transition-all shadow-md">
+                        ${s.label} <i class="fa-solid fa-chevron-down ml-2 text-[8px] opacity-70"></i>
+                    </button>
+                </div>
+            </div>
+            <h2 class="text-3xl font-bold text-slate-800 leading-tight">${idea.title}</h2>
+            <p class="text-slate-600 mt-4 text-lg leading-relaxed">${idea.description || 'Описание отсутствует'}</p>
+        </div>
+        <div class="bg-slate-50 rounded-2xl p-6">
+            <h4 class="text-sm font-bold text-slate-400 uppercase mb-4 tracking-widest text-center">Детали идеи</h4>
+            ${attrHtml || '<p class="text-center text-slate-400 text-xs">Нет дополнительных деталей</p>'}
+        </div>
+    `;
+    document.getElementById('detailModal').classList.remove('hidden');
+}
+
 
         function closeDetail() {
             document.getElementById('detailModal').classList.add('hidden');
         }
-
-        function formatKey(key) {
-            const dictionary = {
-                subcategory: 'Тип',
-                location_type: 'Локация',
-                rating_user_own: 'Моя оценка',
-                
-                genre: 'Жанр',
-                theme: 'Тема',
-                year_release: 'Год выхода',
-                premiere_year: 'Год премьеры',
-                duration: 'Длительность',
-                wishlist_price: 'Стоимость',
-                platforms: 'Платформы',
-                players_count: 'Кол-во игроков',
-                director: 'Режиссер',
-                developer: 'Разработчик',
-                artist: 'Исполнитель',
-
-                exhibit_name: 'Название выставки',
-                collection_name: 'Коллекция',
-                artist_name: 'Автор/Художник',
-                historical_period: 'Период',
-                educational_value: 'Ценность',
-                admission_fee: 'Входной билет',
-
-                cuisine: 'Кухня',
-                dish_recommendation: 'Что заказать',
-                atmosphere: 'Атмосфера',
-                price_level: 'Уровень цен',
-                dietary_options: 'Особенности',
-                is_new_place: 'Новое место',
-
-                activity: 'Активность',
-                difficulty: 'Сложность',
-                duration_estimated: 'Примерное время',
-                equipment_needed: 'Нужна экипировка',
-                weather_dependency: 'Зависит от погоды',
-
-                specific_item: 'Предмет/Название',
-                mood_type: 'Настроение',
-                participants_needed: 'Участников',
-                materials_needed: 'Что подготовить',
-
-                destination_type: 'Тип места',
-                destination_name: 'Куда',
-                duration_days: 'Сколько дней',
-                budget_estimated: 'Бюджет',
-                transport_type: 'Транспорт',
-                accommodation_type: 'Жилье',
-                must_see_places: 'Что посмотреть',
-
-                recipient: 'Кому',
-                occasion: 'Повод',
-                gift_category: 'Вид подарка',
-                budget_limit: 'Бюджет до',
-                is_surprise: 'Сюрприз?',
-                personal_note: 'Заметка',
-
-                skill_to_learn: 'Навык',
-                learning_format: 'Формат',
-                source_recommendation: 'Источник',
-                time_commitment: 'Временные затраты',
-                learning_goal: 'Цель'
-            };
-            return dictionary[key] || key.replace('_', ' ');
-        }
-        
-        let allCurrentIdeas = []; // Глобальное хранилище для фильтрации в браузере
+      
+let allCurrentIdeas = [];
 
     async function loadUser() {
         const token = localStorage.getItem('token');
@@ -143,11 +137,11 @@
         }
     }
 
-// 1. ГЛАВНАЯ ФУНКЦИЯ: Загрузка категории с сервера
-async function loadIdeas(type = '') {
-    // Подсветка активной основной вкладки
+async function loadIdeas(categoryId = null) {
+    // Подсветка кнопок по data-id
     document.querySelectorAll('.filter-btn').forEach(btn => {
-        if (btn.getAttribute('data-type') === type) {
+        const btnId = btn.getAttribute('data-id');
+        if ((!categoryId && !btnId) || (btnId == categoryId)) {
             btn.className = "filter-btn px-6 py-2 bg-rose-500 text-white rounded-full shadow-md whitespace-nowrap transition-all";
         } else {
             btn.className = "filter-btn px-5 py-2 bg-white text-slate-600 rounded-full border border-slate-100 whitespace-nowrap hover:bg-rose-50 transition-all";
@@ -155,74 +149,82 @@ async function loadIdeas(type = '') {
     });
 
     const token = localStorage.getItem('token');
-    const url = type ? `/ideas?idea_type=${encodeURIComponent(type)}&limit=100` : '/ideas?limit=100';
-    
-    try {
-        const response = await fetch(url, { 
-            headers: { 'Authorization': `Bearer ${token}` } 
-        });
-        
-        if (response.status === 401) {
-            window.location.href = '/login';
-            return;
-        }
-        
-        allCurrentIdeas = await response.json();
-        
-        // Показываем суб-фильтры только если выбрана конкретная категория
-        if (type) {
-            renderSubFilters(allCurrentIdeas);
-        } else {
-            document.getElementById('subFiltersWrapper').classList.add('hidden');
-        }
+    // Формируем URL с category_id вместо idea_type
+    let url = `/ideas/?limit=100`;
+    if (categoryId) url += `&category_id=${categoryId}`;
 
-        renderCards(allCurrentIdeas);
+    const response = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+    allCurrentIdeas = await response.json();
+
+     if (categoryId) {
+        // 1. Запрашиваем "Конфиг фильтров" для этой категории
+        const res = await fetch(`/categories/${categoryId}/filters`, {
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        });
+        const config = await res.json();
         
-    } catch (error) {
-        console.error("Ошибка загрузки:", error);
+        // 2. Рисуем фильтры на основе полученного конфига
+        renderDynamicFilters(config);
+    } else {
+        document.getElementById('subFiltersWrapper').classList.add('hidden');
     }
 
+    renderCards(allCurrentIdeas);
 }
 
-// 2. ФУНКЦИЯ ПОСТРОЕНИЯ СУБ-ФИЛЬТРОВ
-function renderSubFilters(ideas) {
+function renderDynamicFilters(config) {
     const wrapper = document.getElementById('subFiltersWrapper');
     const container = document.getElementById('subFiltersContainer');
     
-    // Собираем уникальные значения из поля subcategory внутри attributes
-    const subcategories = [...new Set(ideas.map(i => i.attributes.subcategory).filter(Boolean))];
+    wrapper.classList.remove('hidden');
+    container.innerHTML = ''; // Очищаем старое
 
-    if (subcategories.length > 0) {
-        wrapper.classList.remove('hidden');
-        container.innerHTML = `
-            <button onclick="filterBySub('')" class="sub-btn px-3 py-1 bg-slate-800 text-white text-[10px] font-bold rounded-lg uppercase transition-all">Все</button>
-            ${subcategories.map(sub => `
-                <button onclick="filterBySub('${sub}')" class="sub-btn px-3 py-1 bg-white text-slate-500 border border-slate-200 text-[10px] font-bold rounded-lg uppercase hover:border-rose-300 transition-all">
-                    ${sub}
-                </button>
-            `).join('')}
+    config.dynamic_filters.forEach(filter => {
+        const filterBlock = document.createElement('div');
+        filterBlock.className = "flex flex-col space-y-1 min-w-[120px]";
+        
+        filterBlock.innerHTML = `
+            <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">${filter.label}</span>
+            <select onchange="applyFilters('${filter.name}', this.value)" 
+                    class="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-600 focus:ring-2 focus:ring-rose-400 outline-none transition-all">
+                <option value="">Все</option>
+                ${filter.values.map(v => `<option value="${v}">${v}</option>`).join('')}
+            </select>
         `;
-    } else {
-        wrapper.classList.add('hidden');
-    }
+        container.appendChild(filterBlock);
+    });
 }
 
-// 3. ФУНКЦИЯ ФИЛЬТРАЦИИ (срабатывает при клике на суб-фильтр)
-function filterBySub(sub) {
-    // Подсветка кнопок суб-фильтра
-    document.querySelectorAll('.sub-btn').forEach(btn => {
-        if (btn.innerText.toLowerCase() === (sub || 'все').toLowerCase()) {
-            btn.className = "sub-btn px-3 py-1 bg-slate-800 text-white text-[10px] font-bold rounded-lg uppercase transition-all";
-        } else {
-            btn.className = "sub-btn px-3 py-1 bg-white text-slate-500 border border-slate-200 text-[10px] font-bold rounded-lg uppercase hover:border-rose-300 transition-all";
-        }
-    });
-
-    // Фильтруем данные из памяти, не дергая сервер
-    const filtered = sub 
-        ? allCurrentIdeas.filter(i => i.attributes.subcategory === sub)
+async function applyGlobalFilter(paramName, value) {
+    const filtered = value 
+        ? allCurrentIdeas.filter(i => i.attributes[paramName] == value)
         : allCurrentIdeas;
     
+    renderCards(filtered);
+}
+
+let activeFilters = {};
+
+function applyFilters(attrName, value) {
+    // 1. Обновляем состояние фильтров
+    if (value === "") {
+        delete activeFilters[attrName]; // Если выбрали "Все", удаляем фильтр
+    } else {
+        activeFilters[attrName] = value;
+    }
+
+    // 2. Берем все идеи текущей категории и прогоняем через все фильтры сразу
+    let filtered = allCurrentIdeas;
+
+    Object.entries(activeFilters).forEach(([key, val]) => {
+        filtered = filtered.filter(idea => {
+            // Ищем либо в основных полях (status), либо в JSON (attributes)
+            const ideaValue = idea[key] || (idea.attributes ? idea.attributes[key] : null);
+            return String(ideaValue) === String(val);
+        });
+    });
+
+    // 3. Рисуем результат
     renderCards(filtered);
 }
 
@@ -246,7 +248,7 @@ function renderCards(ideas) {
         card.innerHTML = `
             <div class="flex justify-between items-start mb-4">
                 <span class="px-3 py-1 bg-indigo-50 text-indigo-500 text-[10px] font-bold rounded-full uppercase tracking-tighter">
-                    ${idea.idea_type}
+                    ${idea.category_ref.icon} ${idea.category_ref.label}
                 </span>
                 
                 <div class="flex items-center space-x-2">
@@ -273,8 +275,7 @@ function renderCards(ideas) {
         grid.appendChild(card);
     });
 }
-
-        
+       
         async function changeStatus(id, newStatus) {
             const token = localStorage.getItem('token');
             const response = await fetch(`/ideas/${id}/status`, {
@@ -333,57 +334,54 @@ function renderCards(ideas) {
             closeStatusModal();
         }
 
-        
         // Логика модалки и формы
         function openModal() { document.getElementById('modal').classList.remove('hidden'); renderAttributes(); }
         function closeModal() { document.getElementById('modal').classList.add('hidden'); }
 
-        function renderAttributes() {
-            const type = document.getElementById('formType').value;
-            const container = document.getElementById('dynamicAttrs');
-            
-            const configs = {
-                'Entertainment': [['subcategory', 'Тип (Кино/Игра...)'], ['genre', 'Жанр'], ['director', 'Режиссер/Автор'], ['location_type', 'Место']],
-                'Culture': [['subcategory', 'Тип (Музей/Выставка)'], ['artist_name', 'Имя автора'], ['admission_fee', 'Цена билета']],
-                'Food & Drink': [['subcategory', 'Тип'], ['cuisine', 'Кухня'], ['dish_recommendation', 'Что заказать'], ['price_level', 'Уровень цен (1-4)']],
-                'Active Recreation': [['subcategory', 'Вид спорта'], ['difficulty', 'Сложность'], ['equipment_needed', 'Что взять с собой']],
-                'Home Leisure': [['subcategory', 'Чем займемся'], ['specific_item', 'Название (фильм/книга)'], ['materials_needed', 'Что купить']],
-                'Travel': [['destination_name', 'Куда'], ['duration_days', 'Дней'], ['transport_type', 'Транспорт'], ['budget_estimated', 'Бюджет']],
-                'Gifts & Surprises': [['recipient', 'Кому'], ['occasion', 'Повод'], ['gift_category', 'Тип (Впечатление/Вещь)']],
-                'Learning / Development': [['subcategory', 'Формат'], ['skill_to_learn', 'Навык'], ['time_commitment', 'Сколько времени']]
-            };
+function renderAttributes() {
+    const selectedId = document.getElementById('formType').value;
+    const container = document.getElementById('dynamicAttrs');
+    
+    // Находим нужную категорию в сохраненных данных
+    const category = categoriesData.find(c => c.id == selectedId);
+    
+    if (!category || !category.linked_attributes) {
+        container.innerHTML = '';
+        return;
+    }
 
-            container.innerHTML = (configs[type] || [['subcategory', 'Тип']]).map(field => `
-                <div class="space-y-1">
-                    <label class="text-[10px] text-slate-400 ml-2 uppercase font-bold">${field[1]}</label>
-                    <input type="text" data-key="${field[0]}" placeholder="${field[1]}" class="attr-input w-full px-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-rose-400 text-sm">
-                </div>
-            `).join('');
-        }
+    // Рисуем поля на основе того, что пришло из БД
+    container.innerHTML = category.linked_attributes.map(attr => `
+        <div class="space-y-1">
+            <label class="text-[10px] text-slate-400 ml-2 uppercase font-bold">${attr.label}</label>
+            <input type="text" data-key="${attr.name}" placeholder="${attr.label}" 
+                   class="attr-input w-full px-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-rose-400 text-sm">
+        </div>
+    `).join('');
+}
 
-        document.getElementById('addForm').onsubmit = async (e) => {
-            e.preventDefault();
-            const token = localStorage.getItem('token');
-            const attributes = {};
-            document.querySelectorAll('.attr-input').forEach(el => attributes[el.dataset.key] = el.value);
+document.getElementById('addForm').onsubmit = async (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+    
+    const attributes = {};
+    document.querySelectorAll('.attr-input').forEach(el => attributes[el.dataset.key] = el.value);
 
-            const payload = {
-                title: document.getElementById('formTitle').value,
-                description: document.getElementById('formDesc').value,
-                idea_type: document.getElementById('formType').value,
-                attributes: attributes
-            };
+    const payload = {
+        title: document.getElementById('formTitle').value,
+        description: document.getElementById('formDesc').value,
+        category_id: parseInt(document.getElementById('formType').value), // Передаем ID
+        attributes: attributes
+    };
 
-            const res = await fetch('/ideas', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                body: JSON.stringify(payload)
-            });
+    const res = await fetch('/ideas/', { // Проверь слэш в конце
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify(payload)
+    });
 
-            if (res.ok) { closeModal(); loadIdeas(); e.target.reset(); }
-        };
-
-        
+    if (res.ok) { closeModal(); loadIdeas(); e.target.reset(); }
+};      
         
         async function deleteIdea(id) {
             if (!confirm('Удалить эту идею?')) return;
@@ -394,5 +392,10 @@ function renderCards(ideas) {
 
         function logout() { localStorage.removeItem('token'); window.location.href = '/login'; }
 
-        loadIdeas();
-        loadUser();
+async function startApp() {
+    await loadUser();    
+    await initFilters(); 
+    await loadIdeas();  
+}
+
+startApp();
