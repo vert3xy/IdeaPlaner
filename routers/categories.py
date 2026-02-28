@@ -18,7 +18,6 @@ def get_categories(db: Session = Depends(get_db)):
 
 @router.get("/{cat_id}/filters", response_model=schemas.CategoryFilterConfig)
 def get_category_filters(cat_id: int, db: Session = Depends(get_db)):
-    # 1. Получаем категорию со всеми её атрибутами
     category = db.query(models.Category).options(
         joinedload(models.Category.linked_attributes)
     ).filter(models.Category.id == cat_id).first()
@@ -28,15 +27,11 @@ def get_category_filters(cat_id: int, db: Session = Depends(get_db)):
 
     dynamic_filters = []
 
-    # 2. Для каждого атрибута находим уникальные значения, которые уже есть в базе
     for attr in category.linked_attributes:
-        # Магия SQLite: вытаскиваем уникальные значения из JSON по ключу
-        # json_extract(attributes, '$.key')
         query = db.query(
             func.json_extract(models.Idea.attributes, f'$.{attr.name}').label("val")
         ).filter(models.Idea.category_id == cat_id).distinct()
         
-        # Собираем список значений, исключая None и пустые строки
         values = [row.val for row in query.all() if row.val]
 
         dynamic_filters.append({
@@ -46,7 +41,6 @@ def get_category_filters(cat_id: int, db: Session = Depends(get_db)):
             "values": values
         })
 
-    # 3. Собираем итоговый ответ
     return {
         "category_id": category.id,
         "category_label": category.label,

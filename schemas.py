@@ -79,10 +79,10 @@ class IdeaShort(BaseModel):
 
 # --- Фильтры ---
 class FilterOption(BaseModel):
-    name: str   # техническое имя: 'director'
-    label: str  # красивое имя: 'Режиссер'
-    type: str   # 'string', 'number', 'boolean', 'date'
-    values: List[str] # уникальные значения, которые уже есть в базе
+    name: str   
+    label: str  
+    type: str   
+    values: List[str]
 
 class CategoryFilterConfig(BaseModel):
     category_id: int

@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+    --primary-color: #f43f5e; /* Rose 500 */
+    --bg-main: #f8fafc;       /* Slate 50 */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-main);
+    color: #1e293b; /* Slate 800 */
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #e2e8f0; /* Slate 200 */
+    border-radius: 10px;
+    transition: background 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #cbd5e1; /* Slate 300 */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.idea-card {
+    animation: fadeIn 0.4s ease-out forwards;
+}
+
+.modal-backdrop {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.idea-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(244, 63, 94, 0.2); 
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.15);
+}
+
+body.modal-open {
+    overflow: hidden;
+    padding-right: 6px; 
+}
+
+.loader {
+    width: 24px;
+    height: 24px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.filter-btn {
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.filter-btn.bg-rose-500 {
+    border: none !important;
+    outline: none !important;
+}
+
+.filter-btn.bg-rose-500:hover {
+    background-color: #f43f5e !important; 
+    color: white !important;
+    transform: none; 
+}
+
+.filter-btn:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

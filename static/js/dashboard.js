@@ -10,6 +10,10 @@ let activeFilters = {};
 
 export const Actions = {
     async handleLoadCategory(categoryId = null) {
+        if (allCurrentIdeas.length > 0 && String(categoryId) === String(currentCategoryId)) {
+            return;
+        }
+
         activeFilters = {};
         currentCategoryId = categoryId;
         

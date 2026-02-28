@@ -16,10 +16,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 ALGORITHM = os.getenv("ALGORITHM")
 ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES"))
 
-# Это говорит FastAPI, где брать токен для проверки
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
-
-# --- ФУНКЦИИ БЕЗОПАСНОСТИ ---
 
 def get_password_hash(password: str):
     pwd_bytes = password.encode('utf-8')

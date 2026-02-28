@@ -2,18 +2,14 @@
         <div class="flex flex-wrap gap-2 items-center">
             <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mr-2">Фильтр:</span>
             <div id="subFiltersContainer" class="flex flex-wrap gap-2">
-                <!-- Сюда JS вставит кнопки (например: Кино, Игры, Театр) -->
             </div>
         </div>
     </div>
 
-    <!-- Сетка карточек -->
     <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="ideasGrid"></div>
 
-    <!-- Модалка Детального Просмотра -->
     <div id="detailModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl w-full max-w-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] relative">
-            <!-- Кнопка закрытия всегда на месте -->
             <button id = "CloseDetail" class="absolute top-4 right-4 w-10 h-10 bg-slate-100 text-slate-500 rounded-full z-10 hover:bg-slate-200">
                 <i class="fa-solid fa-xmark"></i>
             </button>
@@ -23,7 +19,6 @@
         </div>
     </div>
 
-    <!-- Модалка формы -->
     <div id="modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
             <div class="p-6 border-b border-slate-100 flex justify-between items-center">
@@ -39,9 +34,7 @@
                 <select id="formType" class="w-full px-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-rose-500">
                 </select>
 
-                <!-- Динамические атрибуты -->
                 <div id="dynamicAttrs" class="space-y-3 pt-4 border-t border-slate-100">
-                    <!-- Будут вставлены через JS -->
                 </div>
 
                 <button type="submit" class="w-full py-4 bg-rose-500 text-white rounded-xl font-bold text-lg hover:bg-rose-600 shadow-lg shadow-rose-200 transition">

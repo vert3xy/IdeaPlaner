@@ -195,14 +195,17 @@ export const UI = {
     updateActiveCategoryBtn(categoryId) {
         document.querySelectorAll('.filter-btn').forEach(btn => {
             const btnId = btn.getAttribute('data-id');
-            const isActive = (!categoryId && !btnId) || (btnId == categoryId);
-            btn.classList.toggle('bg-rose-500', isActive);
-            btn.classList.toggle('text-white', isActive);
-            btn.classList.toggle('shadow-md', isActive);
-            btn.classList.toggle('bg-white', !isActive);
-            btn.classList.toggle('text-slate-600', !isActive);
+            const isActive = (!categoryId && !btnId) || (String(btnId) === String(categoryId));
+
+            if (isActive) {
+                btn.className = "filter-btn px-6 py-2 bg-rose-500 text-white rounded-full shadow-md whitespace-nowrap transition-all border-none ring-0";
+            } else {
+                btn.className = "filter-btn px-6 py-2 bg-white text-slate-600 rounded-full border border-slate-100 whitespace-nowrap hover:bg-rose-50 transition-all";
+            }
         });
     },
+
+
 
     toggleModal(id, show = true) {
         const modal = document.getElementById(id);
