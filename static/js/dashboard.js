@@ -1,103 +1,120 @@
 import { API } from './api.js';
 import { UI } from './ui.js';
+import { initEventListeners } from './events.js';
 
-window.categoriesData = [];   
-window.allCurrentIdeas = []; 
-window.currentCategoryId = null;
-window.currentActiveId = null; 
+let categoriesData = [];  
+let allCurrentIdeas = []; 
+let currentCategoryId = null;
+let currentActiveId = null;
+let activeFilters = {};
+
+export const Actions = {
+    async handleLoadCategory(categoryId = null) {
+        activeFilters = {};
+        currentCategoryId = categoryId;
+        
+        UI.updateActiveCategoryBtn(categoryId);
+
+        try {
+            allCurrentIdeas = await API.fetchIdeas(categoryId); 
+
+            if (categoryId) {
+                const config = await API.fetchCategoryFilters(categoryId);
+                UI.renderDynamicFilters(config);
+            } else {
+                UI.hideSubFilters();
+            }
+
+            UI.renderCards(allCurrentIdeas, categoriesData);
+        } catch (error) {
+            console.error("Ошибка загрузки идей:", error);
+        }
+    },
+
+    async handleDelete(id) {
+        if (!confirm('Удалить эту идею?')) return;
+        try {
+            await API.deleteIdea(id);
+            UI.closeDetail();
+            await this.handleLoadCategory(currentCategoryId);
+        } catch (e) { alert(e.message); }
+    },
+
+    handleOpenStatus(button, event) {
+        currentActiveId = button.dataset.id;
+        UI.openStatusModal(currentActiveId, button.dataset.status, event);
+    },
+
+    async handleApplyStatus(newStatus) {
+        try {
+            const updated = await API.changeStatus(currentActiveId, newStatus);
+            if (updated) {
+                UI.showDetail(updated, categoriesData);
+                UI.closeStatusModal();
+                await this.handleLoadCategory(currentCategoryId);
+            }
+        } catch (e) { alert(e.message); }
+    },
+
+    handleShowDetail(id) {
+        const idea = allCurrentIdeas.find(i => String(i.id) === String(id));
+        if (idea) UI.showDetail(idea, categoriesData);
+    },
+
+    async handleSaveIdea(event) {
+        event.preventDefault();
+        const form = event.target;
+        
+        const attributes = {};
+        form.querySelectorAll('.attr-input').forEach(el => {
+            attributes[el.dataset.key] = el.value;
+        });
+
+        const payload = {
+            title: form.querySelector('#formTitle').value,
+            description: form.querySelector('#formDesc').value,
+            category_id: parseInt(form.querySelector('#formType').value),
+            attributes: attributes
+        };
+
+        try {
+            const newIdea = await API.saveIdea(payload);
+            if (newIdea) {
+                UI.toggleModal('modal', false);
+                form.reset();
+                await this.handleLoadCategory(currentCategoryId);
+            }
+        } catch (e) { alert(e.message); }
+    },
+
+    handleLogout: () => API.logout(),
+    handleCloseDetail: () => UI.toggleModal('detailModal', false),
+    handleCloseModal: () => UI.toggleModal('modal', false),
+    handleCloseStatus: () => UI.closeStatusModal(),
+    handleFormTypeChange: () => UI.renderAttributes(categoriesData)
+};
 
 async function startApp() {
     try {
         const user = await API.fetchMe();
-        if (user) {
-            const display = document.getElementById('userNameDisplay');
-            if (display) display.innerText = `Привет, ${user.username}!`;
-        }
+        const display = document.getElementById('userNameDisplay');
+        if (user && display) display.innerText = `Привет, ${user.username}!`;
 
-        window.categoriesData = await API.fetchCategories();
+        categoriesData = await API.fetchCategories(); 
+        UI.initCategoryInterface(categoriesData);
         
-        UI.initCategoryInterface(window.categoriesData);
+        initEventListeners();
         
-        await loadIdeas();
+        await Actions.handleLoadCategory(null);
 
     } catch (error) {
-        console.error("Ошибка при запуске приложения:", error);
+        if (error.message === "UNAUTHORIZED") {
+            localStorage.removeItem('token'); 
+            window.location.href = '/login';  
+        } else {
+            console.error("Критическая ошибка старта:", error);
+        }
     }
 }
-
-async function loadIdeas(categoryId = null) {
-    window.currentCategoryId = categoryId;
-    
-    UI.updateActiveCategoryBtn(categoryId);
-
-    window.allCurrentIdeas = await API.fetchIdeas(categoryId);
-
-    if (categoryId) {
-        const config = await API.fetchCategoryFilters(categoryId);
-        UI.renderDynamicFilters(config);
-    } else {
-        UI.hideSubFilters();
-    }
-
-    UI.renderCards(window.allCurrentIdeas, window.categoriesData);
-}
-
-document.getElementById('addForm').onsubmit = async (e) => {
-    e.preventDefault();
-    
-    const attributes = {};
-    document.querySelectorAll('.attr-input').forEach(el => {
-        attributes[el.dataset.key] = el.value;
-    });
-
-    const payload = {
-        title: document.getElementById('formTitle').value,
-        description: document.getElementById('formDesc').value,
-        category_id: parseInt(document.getElementById('formType').value),
-        attributes: attributes
-    };
-
-    const res = await API.saveIdea(payload);
-
-    if (res.ok) {
-        UI.toggleModal('modal', false);
-        await loadIdeas(window.currentCategoryId);
-        e.target.reset();
-    } else {
-        alert("Ошибка при сохранении идеи");
-    }
-};
-
-window.loadIdeas = loadIdeas;
-window.openModal = () => UI.toggleModal('modal', true);
-window.closeModal = () => UI.toggleModal('modal', false);
-window.showDetail = (idea) => UI.showDetail(idea, window.categoriesData);
-window.closeDetail = () => UI.closeDetail();
-window.logout = () => API.logout();
-
-window.deleteIdea = async (id) => {
-    if (!confirm('Удалить эту идею?')) return;
-    const res = await API.deleteIdea(id);
-    if (res.ok) {
-        UI.closeDetail();
-        await loadIdeas(window.currentCategoryId);
-    }
-};
-
-window.applyStatusChange = async (newStatus) => {
-    const res = await API.changeStatus(window.currentActiveId, newStatus);
-    if (res.ok) {
-        const updatedIdea = await res.json();
-        UI.showDetail(updatedIdea);
-        UI.closeStatusModal();
-        await loadIdeas(window.currentCategoryId);
-    }
-};
-
-window.openStatusModal = (id, status, event) => {
-    window.currentActiveId = id;
-    UI.openStatusModal(id, status, event);
-};
-window.closeStatusModal = () => UI.closeStatusModal();
 
 startApp();

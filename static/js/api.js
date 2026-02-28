@@ -3,53 +3,68 @@ const getHeaders = () => ({
     'Content-Type': 'application/json'
 });
 
+async function makeRequest(url, options = {}) {
+    const config = {
+        ...options,
+        headers: {
+            ...getHeaders(),
+            ...(options.headers || {})
+        }
+    };
+
+    try {
+        const response = await fetch(url, config);
+
+        if (response.status === 401) {
+            console.warn("Сессия истекла. Редирект на логин...");
+            localStorage.removeItem('token');
+            window.location.href = '/login';
+            return null;
+        }
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || `Ошибка API: ${response.status}`);
+        }
+
+        if (response.status === 204) return null;
+
+        return await response.json();
+
+    } catch (error) {
+        console.error(`Ошибка при запросе к ${url}:`, error.message);
+        throw error;
+    }
+}
+
+
 export const API = {
-    async fetchMe() {
-        const res = await fetch('/users/me', { headers: getHeaders() });
-        return res.ok ? await res.json() : null;
+    fetchMe: () => makeRequest('/users/me'),
+
+    fetchCategories: () => makeRequest('/categories'),
+
+    fetchIdeas(catId = null) {
+        const url = catId ? `/ideas/?limit=100&category_id=${catId}` : `/ideas/?limit=100`;
+        return makeRequest(url);
     },
 
-    async fetchCategories() {
-        const res = await fetch('/categories', { headers: getHeaders() });
-        if (!res.ok) throw new Error("Ошибка категорий");
-        return await res.json();
+    fetchCategoryFilters(catId) {
+        return makeRequest(`/categories/${catId}/filters`);
     },
 
-    async fetchIdeas(catId = null) {
-        let url = `/ideas/?limit=100`;
-        if (catId) url += `&category_id=${catId}`;
-        const res = await fetch(url, { headers: getHeaders() });
-        if (res.status === 401) { window.location.href = '/login'; return []; }
-        return await res.json();
-    },
+    saveIdea: (payload) => makeRequest('/ideas/', {
+        method: 'POST',
+        body: JSON.stringify(payload)
+    }),
 
-    async fetchCategoryFilters(catId) {
-        const res = await fetch(`/categories/${catId}/filters`, { headers: getHeaders() });
-        return await res.json();
-    },
+    deleteIdea: (id) => makeRequest(`/ideas/${id}`, { 
+        method: 'DELETE' 
+    }),
 
-    async changeStatus(id, newStatus) {
-        return await fetch(`/ideas/${id}/status`, {
-            method: 'PATCH',
-            headers: getHeaders(),
-            body: JSON.stringify({ status: newStatus })
-        });
-    },
-
-    async saveIdea(payload) {
-        return await fetch('/ideas/', {
-            method: 'POST',
-            headers: getHeaders(),
-            body: JSON.stringify(payload)
-        });
-    },
-
-    async deleteIdea(id) {
-        return await fetch(`/ideas/${id}`, { 
-            method: 'DELETE', 
-            headers: getHeaders() 
-        });
-    },
+    changeStatus: (id, newStatus) => makeRequest(`/ideas/${id}/status`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status: newStatus })
+    }),
 
     logout() {
         localStorage.removeItem('token');
