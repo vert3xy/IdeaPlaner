@@ -66,6 +66,17 @@ class IdeaUpdate(BaseModel):
 class StatusUpdate(BaseModel):
     status: str # new, planned, done, rejected
 
+class IdeaShort(BaseModel):
+    id: int
+    title: str
+    description: Optional[str]
+    status: str
+    category_id: int
+    attributes: Dict[str, Any]
+    
+    class Config:
+        from_attributes = True
+
 # --- Фильтры ---
 class FilterOption(BaseModel):
     name: str   # техническое имя: 'director'

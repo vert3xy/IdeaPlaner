@@ -12,7 +12,7 @@ router = APIRouter(
     tags=["categories"]
 )
 
-@router.get("/", response_model=List[schemas.CategoryOut])
+@router.get("", response_model=List[schemas.CategoryOut])
 def get_categories(db: Session = Depends(get_db)):
     return db.query(models.Category).options(joinedload(models.Category.linked_attributes)).all()
 

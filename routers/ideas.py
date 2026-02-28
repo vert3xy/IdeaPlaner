@@ -31,35 +31,15 @@ def create_idea(idea: schemas.IdeaCreate, db: Session = Depends(get_db), current
     db.refresh(db_idea)
     return db_idea
 
-@router.get("/", response_model=List[schemas.IdeaOut])
+@router.get("/", response_model=List[schemas.IdeaShort])
 def get_ideas(
     category_id: Optional[int] = None,
-    status: Optional[str] = None, 
-    search: Optional[str] = None,
-    limit: int = 100,
-    offset: int = 0,
-    db: Session = Depends(get_db), 
+    db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user)
 ):
-    query = db.query(models.Idea).options(
-        joinedload(models.Idea.category_ref).joinedload(models.Category.linked_attributes)
-    )
-
-    
+    query = db.query(models.Idea)
     if category_id:
         query = query.filter(models.Idea.category_id == category_id)
-        
-    if status:
-        query = query.filter(models.Idea.status == status)
-        
-    if search:
-        query = query.filter(
-            or_(
-                models.Idea.title.icontains(search),
-                models.Idea.description.icontains(search)
-            )
-        )
-    
     return query.all()
 
 @router.get("/{idea_id}", response_model=schemas.IdeaOut)

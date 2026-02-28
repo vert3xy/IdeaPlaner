@@ -5,33 +5,24 @@
 {% block content %}
 
 <script>
-    // Мгновенная проверка до отрисовки интерфейса
     if (!localStorage.getItem('token')) {
         window.location.href = '/login';
     }
 </script>
 
-    <!-- 1. Навигация -->
     {% include "components/navbar.html" %}
 
     <main class="max-w-6xl mx-auto px-4 py-6">
-        <!-- 2. Основные фильтры категорий -->
         {% include "components/filters.html" %}
-
-        <!-- 3. Сетка карточек (пустая, заполняется через JS) -->
         <div id="ideasGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
-            <!-- Сюда JS вставит карточки -->
         </div>
     </main>
 
-    <!-- 4. Кнопка "Плюс" -->
     <button onclick="openModal()" class="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-tr from-rose-600 to-orange-500 text-white rounded-full shadow-xl flex items-center justify-center text-3xl hover:rotate-90 transition-all z-30">
         <i class="fa-solid fa-plus"></i>
     </button>
 
-    <!-- 5. Все модальные окна -->
     {% include "components/modals.html" %}
 
-    <!-- 6. Логика -->
-    <script src="/static/js/dashboard.js"></script>
+    <script type="module" src="/static/js/dashboard.js"></script>
 {% endblock %}
