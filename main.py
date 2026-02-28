@@ -62,9 +62,10 @@ async def global_exception_handler(request: Request, exc: Exception):
         content={"message": "Internal Server Error, check logs"}
     )
 
-@app.get("/")
-def read_root():
-    return {"message": "Welcome to LovePlans API! Go to /docs for Swagger."}
+@app.get("/", response_class=HTMLResponse)
+async def root_page(request: Request):
+    return templates.TemplateResponse("dashboard.html", {"request": request})
+
 
 @app.get("/login", response_class=HTMLResponse)
 async def login_page(request: Request):

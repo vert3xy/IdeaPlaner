@@ -3,6 +3,14 @@
 {% block title %}Дашборд - IdeaPlaner{% endblock %}
 
 {% block content %}
+
+<script>
+    // Мгновенная проверка до отрисовки интерфейса
+    if (!localStorage.getItem('token')) {
+        window.location.href = '/login';
+    }
+</script>
+
     <!-- 1. Навигация -->
     {% include "components/navbar.html" %}
 
