@@ -14,7 +14,6 @@ router = APIRouter(
 @router.post("/", response_model=schemas.IdeaOut)
 def create_idea(idea: schemas.IdeaCreate, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
     
-    # Проверяем, существует ли такая категория вообще
     category = db.query(models.Category).filter(models.Category.id == idea.category_id).first()
     if not category:
         raise HTTPException(status_code=400, detail="Категория не найдена")

@@ -1,7 +1,26 @@
+# Среда выполнения (Python)
 venv/
+env/
+ENV/
+.venv/
 __pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# База данных и логи (Динамические данные)
 *.db
+*.db-journal
+*.db-wal
+*.log
 app.log
-.vscode/
+
+# Конфигурация и секреты
 .env
-app.log
+.vscode/
+
+# Docker (если появятся локальные данные томов)
+.docker-compose.db.data/
+
+# Система
+.DS_Store

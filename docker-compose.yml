@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  app:
+    build: .
+    container_name: ideaplaner_app
+    restart: always
+    volumes:
+      - .:/app
+      - /tmp:/tmp
+    env_file:
+      - .env

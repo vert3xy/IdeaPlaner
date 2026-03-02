@@ -153,7 +153,7 @@ body.modal-open {
 #appShell.is-detailed #ideasGrid {
     display: flex !important;
     flex-direction: column !important;
-    grid-template-cols: none !important;
+    grid-template-columns: none !important;
     gap: 0 !important;
     padding: 0 !important;
 }
