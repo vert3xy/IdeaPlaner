@@ -3,26 +3,62 @@
 {% block title %}Дашборд - IdeaPlaner{% endblock %}
 
 {% block content %}
-
 <script>
     if (!localStorage.getItem('token')) {
         window.location.href = '/login';
     }
 </script>
 
-    {% include "components/navbar.html" %}
+<div class="flex flex-col h-screen bg-slate-50 overflow-hidden">
 
-    <main class="max-w-6xl mx-auto px-4 py-6">
-        {% include "components/filters.html" %}
-        <div id="ideasGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+    <header class="flex-none bg-white border-b border-slate-100 z-50">
+        {% include "components/navbar.html" %}
+    </header>
+
+    <section class="flex-none bg-white border-b border-slate-100 z-40">
+        <div class="max-w-[1600px] mx-auto px-6 py-4">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="flex-1">
+                    {% include "components/filters.html" %}
+                </div>
+                
+                <div class="hidden md:flex bg-slate-100 p-1 rounded-xl shadow-inner h-10">
+                    <button id="setViewGrid" class="view-btn px-3 rounded-lg bg-white shadow-sm text-rose-500 transition-all">
+                        <i class="fa-solid fa-grip-vertical"></i>
+                    </button>
+                    <button id="setViewList" class="view-btn px-3 rounded-lg text-slate-400 hover:text-slate-600 transition-all">
+                        <i class="fa-solid fa-list-ul"></i>
+                    </button>
+                </div>
+            </div>
         </div>
-    </main>
+    </section>
 
-    <button id="OpenModal" class="fixed bottom-6 right-6 w-16 h-16 bg-gradient-to-tr from-rose-600 to-orange-500 text-white rounded-full shadow-xl flex items-center justify-center text-3xl hover:rotate-90 transition-all z-30">
-        <i class="fa-solid fa-plus"></i>
-    </button>
+    <div id="appShell" class="flex-1 flex overflow-hidden relative">
+        
+        <main id="masterView" class="overflow-y-auto">
+            <div class="max-w-[1400px] mx-auto p-6">
+                <div id="ideasGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+            </div>
+        </main>
 
-    {% include "components/modals.html" %}
+        <aside id="sideDetailPane" class="flex flex-col border-l">
+            <div class="min-w-[600px] lg:min-w-[800px] h-full flex flex-col relative">
+                
+                <div id="sideDetailContent" class="flex-1 overflow-y-auto p-10 scroll-smooth">
+                </div>
+            </div>
+        </aside>
 
-    <script type="module" src="/static/js/dashboard.js"></script>
+    </div>
+</div>
+
+<button id="OpenModal" class="fixed bottom-8 right-8 w-16 h-16 bg-gradient-to-tr from-rose-600 to-rose-400 text-white rounded-2xl shadow-xl flex items-center justify-center text-3xl hover:scale-105 transition-all z-50 group">
+    <i class="fa-solid fa-plus"></i>
+</button>
+
+{% include "components/modals.html" %}
+
+<script type="module" src="/static/js/dashboard.js"></script>
 {% endblock %}

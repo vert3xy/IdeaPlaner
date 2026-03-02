@@ -9,8 +9,8 @@ let currentActiveId = null;
 let activeFilters = {};
 
 export const Actions = {
-    async handleLoadCategory(categoryId = null) {
-        if (allCurrentIdeas.length > 0 && String(categoryId) === String(currentCategoryId)) {
+    async handleLoadCategory(categoryId = null, force = false) {
+        if (!force && allCurrentIdeas.length > 0 && String(categoryId) === String(currentCategoryId)) {
             return;
         }
 
@@ -30,18 +30,24 @@ export const Actions = {
             }
 
             UI.renderCards(allCurrentIdeas, categoriesData);
+            console.log("Данные успешно загружены");
         } catch (error) {
             console.error("Ошибка загрузки идей:", error);
         }
     },
+
 
     async handleDelete(id) {
         if (!confirm('Удалить эту идею?')) return;
         try {
             await API.deleteIdea(id);
             UI.closeDetail();
-            await this.handleLoadCategory(currentCategoryId);
-        } catch (e) { alert(e.message); }
+            await Actions.handleLoadCategory(currentCategoryId, true);
+            console.log("Список обновлен после удаления");
+        } catch (e) { 
+            console.error(e);
+            alert("Ошибка при удалении: " + e.message); 
+        }
     },
 
     handleOpenStatus(button, event) {
@@ -55,14 +61,22 @@ export const Actions = {
             if (updated) {
                 UI.showDetail(updated, categoriesData);
                 UI.closeStatusModal();
-                await this.handleLoadCategory(currentCategoryId);
+                await Actions.handleLoadCategory(currentCategoryId, true);
             }
         } catch (e) { alert(e.message); }
     },
 
     handleShowDetail(id) {
         const idea = allCurrentIdeas.find(i => String(i.id) === String(id));
-        if (idea) UI.showDetail(idea, categoriesData);
+        if (idea) {
+            UI.showDetail(idea, categoriesData);
+        }
+    },
+
+    handleCloseDetail() {
+        const shell = document.getElementById('appShell');
+        if (shell) shell.classList.remove('is-detailed');
+        document.querySelectorAll('.idea-card').forEach(c => c.classList.remove('is-active'));
     },
 
     async handleSaveIdea(event) {
@@ -86,13 +100,18 @@ export const Actions = {
             if (newIdea) {
                 UI.toggleModal('modal', false);
                 form.reset();
-                await this.handleLoadCategory(currentCategoryId);
+                await Actions.handleLoadCategory(currentCategoryId, true);
             }
         } catch (e) { alert(e.message); }
     },
 
+    handleOpenAddModal() {
+        UI.toggleModal('modal', true);
+        UI.renderAttributes(categoriesData);
+    },
+
+
     handleLogout: () => API.logout(),
-    handleCloseDetail: () => UI.toggleModal('detailModal', false),
     handleCloseModal: () => UI.toggleModal('modal', false),
     handleCloseStatus: () => UI.closeStatusModal(),
     handleFormTypeChange: () => UI.renderAttributes(categoriesData)

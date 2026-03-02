@@ -24,6 +24,18 @@ export function initEventListeners() {
         });
     }
 
+    document.getElementById('sideDetailPane')?.addEventListener('click', (event) => {
+        const element = event.target.closest('[data-action]');
+        if (!element) return;
+
+        const action = element.dataset.action;
+        const id = element.dataset.id;
+
+        if (action === 'delete') Actions.handleDelete(id);
+        if (action === 'openStatus') Actions.handleOpenStatus(element, event);
+        if (action === 'CloseSidePane') Actions.handleCloseDetail();
+    });
+
     document.getElementById('categoryFilters')?.addEventListener('click', (event) => {
         const btn = event.target.closest('.filter-btn');
         if (btn) {
@@ -52,9 +64,33 @@ export function initEventListeners() {
         }
     });
 
+    const openModalBtn = document.getElementById('OpenModal');
+    if (openModalBtn) {
+        openModalBtn.addEventListener('click', () => {
+            Actions.handleOpenAddModal();
+        });
+    }
+
+    document.getElementById('setViewGrid')?.addEventListener('click', () => {
+    UI.currentViewMode = 'grid';
+        Actions.handleLoadCategory(currentCategoryId, true);
+    });
+
+    document.getElementById('setViewList')?.addEventListener('click', () => {
+    UI.currentViewMode = 'list';
+        Actions.handleLoadCategory(currentCategoryId, true);
+    });
+
+    document.getElementById('CloseSidePane')?.addEventListener('click', () => {
+        UI.closeSidePane();
+    });
+
+
     document.getElementById('logoutBtn')?.addEventListener('click', Actions.handleLogout);
     document.getElementById('CloseDetail')?.addEventListener('click', Actions.handleCloseDetail);
     document.getElementById('CloseModal')?.addEventListener('click', Actions.handleCloseModal);
-    
     document.getElementById('formType')?.addEventListener('change', Actions.handleFormTypeChange);
+    document.getElementById('addForm')?.addEventListener('submit', (e) => {
+        Actions.handleSaveIdea(e);
+    });
 }

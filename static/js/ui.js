@@ -1,107 +1,154 @@
 import { statusMap, formatValue, escapeHTML } from './utils.js';
 
 export const UI = {
+    currentViewMode: 'grid', 
+
     renderCards(ideas, categoriesData) {
         const grid = document.getElementById('ideasGrid');
         if (!grid) return;
         grid.innerHTML = '';
 
+        // Если идей нет, выводим красивое пустое состояние
         if (ideas.length === 0) {
-            grid.innerHTML = '<div class="col-span-full text-center py-20 text-slate-400">Пока здесь ничего нет... 💡</div>';
+            grid.innerHTML = `
+                <div class="col-span-full text-center py-20">
+                    <div class="text-4xl mb-4">💡</div>
+                    <p class="text-slate-400 font-medium">В этой категории пока нет идей...</p>
+                </div>
+            `;
             return;
         }
 
-        ideas.forEach(idea => {
+        // Перебираем идеи, используя индекс для порядкового номера
+        ideas.forEach((idea, index) => {
             const card = document.createElement('div');
-            card.className = "idea-card cursor-pointer bg-white p-6 rounded-3xl shadow-sm border border-slate-100 hover:shadow-xl transition-all relative group";
             
-            card.dataset.action = 'showDetail';
-            card.dataset.id = idea.id;  
-
-            const s = statusMap[idea.status] || { label: idea.status, color: 'bg-slate-500' };
+            // Находим данные категории и статуса
             const cat = categoriesData.find(c => Number(c.id) === Number(idea.category_id)) || {};
+            const s = statusMap[idea.status] || { label: idea.status, color: 'bg-slate-500' };
+
+            // Порядковый номер (начинаем с 1)
+            const orderNumber = index + 1;
+
+            // Основные классы карточки (стиль плитки по умолчанию)
+            card.className = "idea-card cursor-pointer bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-xl transition-all relative group flex flex-col";
+            
+            // Атрибуты для системы событий (делегирование)
+            card.dataset.action = 'showDetail';
+            card.dataset.id = idea.id;
 
             card.innerHTML = `
                 <div class="flex justify-between items-start mb-4">
                     <span class="px-3 py-1 bg-indigo-50 text-indigo-500 text-[10px] font-bold rounded-full uppercase tracking-tighter">
-                        ${cat.icon || '💡'} ${cat.label || 'Идея'}
+                        <span class="cat-label">${cat.icon || '💡'} ${cat.label || 'Идея'}</span>
                     </span>
-                    
-                    <div class="flex items-center space-x-2">
-                        <button data-action="openStatus" data-id="${idea.id}" data-status="${idea.status}"  
-                                class="px-2.5 py-1 ${s.color} text-white text-[9px] font-black rounded-lg uppercase tracking-tighter hover:scale-105 transition shadow-sm">
-                            ${s.label}
-                        </button>
-                        
-                        <button data-action="delete" data-id="${idea.id}" 
-                                class="text-slate-200 hover:text-rose-500 transition opacity-100 p-1">
-                            <i class="fa-solid fa-trash-can text-sm"></i>
-                        </button>
-                    </div>
+                    <button data-action="openStatus" data-id="${idea.id}" data-status="${idea.status}" 
+                            class="px-2.5 py-1 ${s.color} text-white text-[9px] font-black rounded-lg uppercase tracking-tighter">
+                        ${s.label}
+                    </button>
                 </div>
-                <h3 class="text-lg font-bold text-slate-800 mb-2 leading-tight">${escapeHTML(idea.title)}</h3>
-                <p class="text-slate-500 text-xs mb-4 line-clamp-3">${escapeHTML(idea.description) || 'Описание отсутствует'}</p>
-                <div class="flex items-center text-rose-500 text-[10px] font-bold uppercase tracking-wider mt-auto">
+
+                <div class="flex items-center mb-2">
+                    <span class="idea-index-badge">${orderNumber}</span>
+                    <h3 class="text-lg font-bold text-slate-800 leading-tight group-hover:text-rose-500 transition-colors">
+                        ${escapeHTML(idea.title)}
+                    </h3>
+                </div>
+
+                <p class="text-slate-500 text-xs mb-4 line-clamp-3 leading-relaxed">
+                    ${escapeHTML(idea.description) || 'Нет описания'}
+                </p>
+                <div class="flex items-center text-rose-500 text-[10px] font-black uppercase tracking-wider mt-auto pt-2">
                     <span>Подробнее</span>
                     <i class="fa-solid fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
                 </div>
             `;
+
             grid.appendChild(card);
         });
     },
 
     showDetail(idea, categoriesData) {
-        const content = document.getElementById('detailContent');
-        if (!content) return;
+        const content = document.getElementById('sideDetailContent');
+        const shell = document.getElementById('appShell');
+        if (!content || !shell) return;
 
-        const catInfo = categoriesData.find(c => Number(c.id) === Number(idea.category_id));
-        
+        document.querySelectorAll('.idea-card').forEach(c => c.classList.remove('is-active'));
+        document.querySelector(`.idea-card[data-id="${idea.id}"]`)?.classList.add('is-active');
+
+        const cat = categoriesData.find(c => Number(c.id) === Number(idea.category_id)) || {};
         const s = statusMap[idea.status] || { label: idea.status, color: 'bg-slate-800' };
-        
-        let attrHtml = '';
-        if (idea.attributes && catInfo && catInfo.linked_attributes) {
-            for (const [key, value] of Object.entries(idea.attributes)) {
-                const attrMetadata = catInfo.linked_attributes.find(a => a.name === key);
-                const label = attrMetadata ? attrMetadata.label : key;
 
-                attrHtml += `
-                    <div class="flex justify-between py-3 border-b border-slate-100">
-                        <span class="text-slate-500 font-medium">${escapeHTML(label)}</span>
-                        <span class="text-slate-900 font-semibold text-right ml-4">
-                            ${escapeHTML(formatValue(value))}
-                        </span>
-                    </div>`;
-            }
-        }
+        const attrHtml = (idea.attributes && cat.linked_attributes) ? cat.linked_attributes.map(attr => {
+            const val = idea.attributes[attr.name];
+            if (!val) return '';
+            return `
+                <div class="attr-row">
+                    <span class="attr-label">${attr.label}</span>
+                    <span class="attr-value">${escapeHTML(formatValue(val))}</span>
+                </div>`;
+        }).join('') : '';
 
         content.innerHTML = `
-            <div class="mb-6">
-                <div class="flex justify-between items-start mb-6 pr-10">
-                    <span class="px-3 py-1 bg-indigo-50 text-indigo-500 text-[10px] font-bold rounded-full uppercase italic">
-                        ${catInfo ? catInfo.icon + ' ' + catInfo.label : 'Без категории'}
-                    </span>
+            <div class="animate-fadeIn max-w-5xl">
+                <div class="detail-header flex justify-between items-start">
+                    <div>
+                        <div class="flex items-center space-x-2 mb-4">
+                            <span class="text-xs font-bold text-rose-500 uppercase tracking-widest">${cat.icon} ${cat.label}</span>
+                            <span class="text-[10px] text-slate-300 font-bold uppercase">#${idea.id}</span>
+                        </div>
+                        <h2 class="text-4xl font-black text-slate-900 leading-tight mb-4">${escapeHTML(idea.title)}</h2>
+                        <div class="flex items-center space-x-3">
+                            <span class="px-3 py-1 ${s.color} text-white text-[10px] font-bold rounded-full uppercase tracking-wider">${s.label}</span>
+                            <button data-action="openStatus" data-id="${idea.id}" data-status="${idea.status}" class="text-slate-400 hover:text-rose-500 text-xs font-bold transition">Изменить</button>
+                        </div>
+                    </div>
                     
                     <div class="flex items-center space-x-4">
-                        <button data-action="delete" data-id="${idea.id}"
-                                class="text-slate-300 hover:text-rose-500 transition-colors p-1">
-                            <i class="fa-solid fa-trash-can text-lg"></i>
-                        </button>
-                        
-                        <button data-action="openStatus" data-id="${idea.id}" data-status="${idea.status}"
-                                class="min-w-[130px] px-4 py-2.5 ${s.color} text-white text-[10px] font-black rounded-xl uppercase tracking-widest hover:brightness-110 transition-all shadow-md">
-                            ${s.label} <i class="fa-solid fa-chevron-down ml-2 text-[8px] opacity-70"></i>
-                        </button>
+                        <button data-action="delete" data-id="${idea.id}" class="text-slate-200 hover:text-rose-500 transition"><i class="fa-solid fa-trash-can text-xl"></i></button>
+                        <button data-action="CloseSidePane" class="text-slate-300 hover:text-slate-600 transition"><i class="fa-solid fa-xmark text-3xl"></i></button>
                     </div>
                 </div>
-                <h2 class="text-3xl font-bold text-slate-800 leading-tight">${escapeHTML(idea.title)}</h2>
-                <p class="text-slate-600 mt-4 text-lg leading-relaxed">${escapeHTML(idea.description) || 'Описание отсутствует'}</p>
-            </div>
-            <div class="bg-slate-50 rounded-2xl p-6">
-                <h4 class="text-sm font-bold text-slate-400 uppercase mb-4 tracking-widest text-center">Детали идеи</h4>
-                ${attrHtml || '<p class="text-center text-slate-400 text-xs">Нет дополнительных деталей</p>'}
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-16">
+                    <div class="lg:col-span-2">
+                        <div class="description-text">
+                            "${escapeHTML(idea.description) || 'Описания нет...'}"
+                        </div>
+                        
+                        <div class="mt-12 p-10 bg-slate-50 border-2 border-dashed border-slate-100 rounded-[2rem] flex flex-col items-center justify-center text-slate-300 hover:bg-rose-50 transition-all cursor-pointer group">
+                            <i class="fa-solid fa-image text-4xl mb-4"></i>
+                            <span class="text-[10px] font-black uppercase">Нажмите, чтобы добавить изображение</span>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-1">
+                        <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest mb-4">Параметры</h4>
+                        <div class="mb-10">
+                            ${attrHtml || '<p class="text-slate-400 text-sm italic">Нет данных</p>'}
+                        </div>
+
+                        <div class="pt-8 border-t border-slate-100">
+                            <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest mb-4">Метаданные</h4>
+                            <div class="space-y-3 text-[11px]">
+                                <div class="flex justify-between"><span class="text-slate-400 font-bold uppercase">Автор</span><span class="font-bold text-slate-700">admin</span></div>
+                                <div class="flex justify-between"><span class="text-slate-400 font-bold uppercase">Создано</span><span class="font-bold text-slate-700">${new Date(idea.created_at || Date.now()).toLocaleDateString()}</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         `;
-        this.toggleModal('detailModal', true);
+
+        shell.classList.add('is-detailed');
+    },
+
+    closeSidePane() {
+        const shell = document.getElementById('appShell');
+        if (shell) {
+            shell.classList.remove('is-detailed');
+        }
+        document.querySelectorAll('.idea-card').forEach(c => c.classList.remove('is-active'));
     },
 
     renderDynamicFilters(config) {
@@ -157,7 +204,7 @@ export const UI = {
         container.innerHTML = category.linked_attributes.map(attr => `
             <div class="space-y-1">
                 <label class="text-[10px] text-slate-400 ml-2 uppercase font-bold">${attr.label}</label>
-                <input type="text" data-key="${attr.name}" placeholder="${attr.label}" 
+                <input type="text" data-key="${attr.name}" placeholder="${escapeHTML(attr.label)}" 
                     class="attr-input w-full px-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-rose-400 text-sm">
             </div>
         `).join('');
@@ -191,7 +238,6 @@ export const UI = {
         }
     },
 
-
     updateActiveCategoryBtn(categoryId) {
         document.querySelectorAll('.filter-btn').forEach(btn => {
             const btnId = btn.getAttribute('data-id');
@@ -204,8 +250,6 @@ export const UI = {
             }
         });
     },
-
-
 
     toggleModal(id, show = true) {
         const modal = document.getElementById(id);
