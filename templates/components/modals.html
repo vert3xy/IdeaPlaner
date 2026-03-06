@@ -10,9 +10,6 @@
 
     <div id="detailModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-3xl w-full max-w-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh] relative">
-            <button id = "CloseDetail" class="absolute top-4 right-4 w-10 h-10 bg-slate-100 text-slate-500 rounded-full z-10 hover:bg-slate-200">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
             
             <div id="detailContent" class="p-8 overflow-y-auto"></div>
             
@@ -20,11 +17,16 @@
     </div>
 
     <div id="modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
-            <div class="p-6 border-b border-slate-100 flex justify-between items-center">
-                <h2 class="text-xl font-bold text-slate-800">Новая идея</h2>
-                <button id="CloseModal" class="text-slate-400 hover:text-slate-600 text-2xl">&times;</button>
-            </div>
+    <div class="bg-white rounded-3xl w-full max-w-lg shadow-2xl overflow-hidden max-h-[90vh] flex flex-col">
+        
+        <div class="p-6 border-b border-slate-100 flex justify-between items-center">
+            <h2 class="text-xl font-bold text-slate-800">Новая идея</h2>
+            
+            <button id="CloseModal" data-action="CloseSidePane" 
+                class="w-10 h-10 flex items-center justify-center bg-slate-100 text-slate-500 hover:bg-slate-200 rounded-full transition active:scale-95">
+                <i class="fa-solid fa-xmark text-xl pointer-events-none"></i>
+            </button>
+        </div>
             
             <form id="addForm" class="p-6 space-y-4 overflow-y-auto">
                 <input type="text" id="formTitle" placeholder="Название (например: Поход в кино)" required class="w-full px-4 py-3 bg-slate-50 border-none rounded-xl focus:ring-2 focus:ring-rose-500">

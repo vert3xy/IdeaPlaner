@@ -46,13 +46,25 @@ export function initEventListeners() {
 
     document.getElementById('detailModal')?.addEventListener('click', (event) => {
         const element = event.target.closest('[data-action]');
-        if (!element) return;
+        
+        if (!element) {
+            if (event.target.id === 'detailModal') {
+                Actions.handleCloseDetail();
+            }
+            return;
+        }
 
         const action = element.dataset.action;
         const id = element.dataset.id;
 
+        event.preventDefault();
+
         if (action === 'delete') Actions.handleDelete(id);
         if (action === 'openStatus') Actions.handleOpenStatus(element, event);
+        
+        if (action === 'CloseSidePane' || action === 'CloseDetail' || action === 'closeStatus') {
+            Actions.handleCloseDetail();
+        }
     });
 
     document.getElementById('statusModal')?.addEventListener('click', (event) => {
@@ -93,4 +105,49 @@ export function initEventListeners() {
     document.getElementById('addForm')?.addEventListener('submit', (e) => {
         Actions.handleSaveIdea(e);
     });
+    document.getElementById('modal')?.addEventListener('click', (event) => {
+        if (event.target.id === 'modal') {
+            Actions.handleCloseModal();
+        }
+    });
+
+    const toggleBtn = document.getElementById('toggleFilters');
+    const filterPanel = document.getElementById('extraFiltersPanel');
+
+    toggleBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        filterPanel?.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (e) => {
+        if (filterPanel && !filterPanel.contains(e.target) && !toggleBtn.contains(e.target)) {
+            filterPanel.classList.add('hidden');
+        }
+    });
+
+    ['sortDate', 'filterAuthor'].forEach(id => {
+        document.getElementById(id)?.addEventListener('change', () => Actions.applyFilters());
+    });
+
+    document.getElementById('subFiltersContainer')?.addEventListener('change', (e) => {
+        if (e.target.classList.contains('dynamic-sub-filter')) {
+            Actions.applyFilters();
+        }
+    });
+
+    document.getElementById('resetFilters')?.addEventListener('click', () => {
+        const authorSelect = document.getElementById('filterAuthor');
+        const dateSelect = document.getElementById('sortDate');
+        
+        if (authorSelect) authorSelect.value = "";
+        if (dateSelect) dateSelect.value = "new";
+        
+        document.querySelectorAll('.dynamic-sub-filter').forEach(select => {
+            select.value = "";
+        });
+
+        Actions.applyFilters();
+    });
+
+
 }

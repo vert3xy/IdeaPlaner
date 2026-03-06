@@ -8,7 +8,6 @@ export const UI = {
         if (!grid) return;
         grid.innerHTML = '';
 
-        // Если идей нет, выводим красивое пустое состояние
         if (ideas.length === 0) {
             grid.innerHTML = `
                 <div class="col-span-full text-center py-20">
@@ -19,21 +18,17 @@ export const UI = {
             return;
         }
 
-        // Перебираем идеи, используя индекс для порядкового номера
         ideas.forEach((idea, index) => {
             const card = document.createElement('div');
-            
-            // Находим данные категории и статуса
+
             const cat = categoriesData.find(c => Number(c.id) === Number(idea.category_id)) || {};
             const s = statusMap[idea.status] || { label: idea.status, color: 'bg-slate-500' };
 
-            // Порядковый номер (начинаем с 1)
             const orderNumber = index + 1;
 
-            // Основные классы карточки (стиль плитки по умолчанию)
             card.className = "idea-card cursor-pointer bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-xl transition-all relative group flex flex-col";
             
-            // Атрибуты для системы событий (делегирование)
+
             card.dataset.action = 'showDetail';
             card.dataset.id = idea.id;
 
@@ -69,9 +64,12 @@ export const UI = {
     },
 
     showDetail(idea, categoriesData) {
-        const content = document.getElementById('sideDetailContent');
+        const isMobile = window.innerWidth < 1024;
+        const targetContainerId = isMobile ? 'detailContent' : 'sideDetailContent';
+        const container = document.getElementById(targetContainerId);
         const shell = document.getElementById('appShell');
-        if (!content || !shell) return;
+        
+        if (!container) return;
 
         document.querySelectorAll('.idea-card').forEach(c => c.classList.remove('is-active'));
         document.querySelector(`.idea-card[data-id="${idea.id}"]`)?.classList.add('is-active');
@@ -83,64 +81,108 @@ export const UI = {
             const val = idea.attributes[attr.name];
             if (!val) return '';
             return `
-                <div class="attr-row">
-                    <span class="attr-label">${attr.label}</span>
-                    <span class="attr-value">${escapeHTML(formatValue(val))}</span>
+                <div class="attr-row flex justify-between py-3 border-b border-slate-50 gap-4">
+                    <span class="attr-label text-[10px] font-bold text-slate-400 uppercase tracking-widest">${attr.label}</span>
+                    <span class="attr-value text-sm font-bold text-slate-700 text-right">${escapeHTML(formatValue(val))}</span>
                 </div>`;
         }).join('') : '';
 
-        content.innerHTML = `
-            <div class="animate-fadeIn max-w-5xl">
-                <div class="detail-header flex justify-between items-start">
-                    <div>
-                        <div class="flex items-center space-x-2 mb-4">
-                            <span class="text-xs font-bold text-rose-500 uppercase tracking-widest">${cat.icon} ${cat.label}</span>
-                            <span class="text-[10px] text-slate-300 font-bold uppercase">#${idea.id}</span>
+        container.innerHTML = `
+            <div class="animate-fadeIn max-w-6xl mx-auto">
+                <!-- HEADER: Новая структура (Mobile Friendly) -->
+                <div class="mb-8 pb-6 border-b border-slate-100">
+                    
+                    <!-- 1. Верхний ряд: Категория + Кнопки -->
+                    <div class="flex justify-between items-center mb-4">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-[10px] font-bold text-rose-500 uppercase tracking-widest px-2 py-1 bg-rose-50 rounded-md">
+                                ${cat.icon} ${cat.label}
+                            </span>
+                            <span class="text-[10px] text-slate-300 font-bold uppercase tracking-widest">#${idea.id}</span>
                         </div>
-                        <h2 class="text-4xl font-black text-slate-900 leading-tight mb-4">${escapeHTML(idea.title)}</h2>
-                        <div class="flex items-center space-x-3">
-                            <span class="px-3 py-1 ${s.color} text-white text-[10px] font-bold rounded-full uppercase tracking-wider">${s.label}</span>
-                            <button data-action="openStatus" data-id="${idea.id}" data-status="${idea.status}" class="text-slate-400 hover:text-rose-500 text-xs font-bold transition">Изменить</button>
+                        
+                        <div class="flex items-center space-x-1">
+                            <!-- Удалить -->
+                            <button data-action="delete" data-id="${idea.id}" 
+                                    class="w-11 h-11 flex items-center justify-center text-slate-300 hover:text-rose-500 hover:bg-rose-50 rounded-full transition">
+                                <i class="fa-solid fa-trash-can text-base"></i>
+                            </button>
+                            <!-- Закрыть -->
+                            <button data-action="CloseSidePane" 
+                                    class="w-11 h-11 flex items-center justify-center bg-slate-100 text-slate-500 hover:bg-slate-200 rounded-full transition">
+                                <i class="fa-solid fa-xmark text-xl" style="pointer-events: none;"></i>
+                            </button>
                         </div>
                     </div>
-                    
-                    <div class="flex items-center space-x-4">
-                        <button data-action="delete" data-id="${idea.id}" class="text-slate-200 hover:text-rose-500 transition"><i class="fa-solid fa-trash-can text-xl"></i></button>
-                        <button data-action="CloseSidePane" class="text-slate-300 hover:text-slate-600 transition"><i class="fa-solid fa-xmark text-3xl"></i></button>
+
+                    <!-- 2. Средний ряд: Заголовок (теперь ему ничего не мешает) -->
+                    <h2 class="text-3xl md:text-5xl font-black text-slate-900 leading-tight mb-5">
+                        ${escapeHTML(idea.title)}
+                    </h2>
+
+                    <!-- 3. Нижний ряд: Статус -->
+                    <div class="flex items-center space-x-3">
+                        <span class="px-3 py-1 ${s.color} text-white text-[10px] font-black rounded-full uppercase tracking-widest shadow-sm">
+                            ${s.label}
+                        </span>
+                        <button data-action="openStatus" data-id="${idea.id}" data-status="${idea.status}" 
+                                class="text-slate-400 hover:text-rose-500 text-[10px] font-bold uppercase tracking-widest transition">
+                            Изменить статус
+                        </button>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-16">
-                    <div class="lg:col-span-2">
+                <!-- CONTENT GRID -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-16">
+                    
+                    <!-- LEFT COLUMN: Описание и Фото -->
+                    <div class="lg:col-span-2 space-y-10">
                         <div class="description-text">
                             "${escapeHTML(idea.description) || 'Описания нет...'}"
                         </div>
                         
-                        <div class="mt-12 p-10 bg-slate-50 border-2 border-dashed border-slate-100 rounded-[2rem] flex flex-col items-center justify-center text-slate-300 hover:bg-rose-50 transition-all cursor-pointer group">
-                            <i class="fa-solid fa-image text-4xl mb-4"></i>
-                            <span class="text-[10px] font-black uppercase">Нажмите, чтобы добавить изображение</span>
+                        <div class="p-12 bg-slate-50 border-2 border-dashed border-slate-100 rounded-[2.5rem] flex flex-col items-center justify-center text-slate-300 hover:bg-rose-50/30 transition-all cursor-pointer group">
+                            <i class="fa-solid fa-image text-4xl mb-3"></i>
+                            <span class="text-[9px] font-black uppercase tracking-widest">Добавить изображение</span>
                         </div>
                     </div>
 
-                    <div class="lg:col-span-1">
-                        <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest mb-4">Параметры</h4>
-                        <div class="mb-10">
-                            ${attrHtml || '<p class="text-slate-400 text-sm italic">Нет данных</p>'}
-                        </div>
+                    <!-- RIGHT COLUMN: Параметры и Метаданные -->
+                    <div class="space-y-10">
+                        <section>
+                            <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest mb-4 flex items-center">
+                                <span class="w-6 h-[1px] bg-rose-500 mr-2"></span> Параметры
+                            </h4>
+                            <div class="space-y-1">${attrHtml || '<p class="text-slate-400 text-xs italic">Нет данных</p>'}</div>
+                        </section>
 
-                        <div class="pt-8 border-t border-slate-100">
-                            <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest mb-4">Метаданные</h4>
-                            <div class="space-y-3 text-[11px]">
-                                <div class="flex justify-between"><span class="text-slate-400 font-bold uppercase">Автор</span><span class="font-bold text-slate-700">admin</span></div>
-                                <div class="flex justify-between"><span class="text-slate-400 font-bold uppercase">Создано</span><span class="font-bold text-slate-700">${new Date(idea.created_at || Date.now()).toLocaleDateString()}</span></div>
+                        <section class="pt-8 border-t border-slate-100">
+                            <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest mb-4 flex items-center">
+                                <span class="w-6 h-[1px] bg-slate-200 mr-2"></span> Метаданные
+                            </h4>
+                            <div class="space-y-3 text-[10px] font-bold uppercase">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-slate-400 tracking-wider">Автор</span>
+                                    <span class="text-slate-700 bg-slate-100 px-2 py-0.5 rounded">admin</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-slate-400 tracking-wider">Создано</span>
+                                    <span class="text-slate-600">${new Date(idea.created_at || Date.now()).toLocaleDateString('ru-RU')}</span>
+                                </div>
                             </div>
-                        </div>
+                        </section>
                     </div>
                 </div>
             </div>
         `;
 
-        shell.classList.add('is-detailed');
+        if (isMobile) {
+            shell.classList.remove('is-detailed');
+            this.toggleModal('detailModal', true);
+        } else {
+            shell.classList.add('is-detailed');
+            this.toggleModal('detailModal', false);
+        }
     },
 
     closeSidePane() {
@@ -152,26 +194,26 @@ export const UI = {
     },
 
     renderDynamicFilters(config) {
-        const wrapper = document.getElementById('subFiltersWrapper');
+        const wrapper = document.getElementById('subFiltersContainerWrapper');
         const container = document.getElementById('subFiltersContainer');
         if (!wrapper || !container) return;
 
-        wrapper.classList.remove('hidden');
-        container.innerHTML = '';
+        if (!config || !config.dynamic_filters || config.dynamic_filters.length === 0) {
+            container.innerHTML = '';
+            wrapper.classList.add('hidden');
+            return;
+        }
 
-        config.dynamic_filters.forEach(filter => {
-            const filterBlock = document.createElement('div');
-            filterBlock.className = "flex flex-col space-y-1 min-w-[120px]";
-            filterBlock.innerHTML = `
-                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest ml-1">${filter.label}</span>
-                <select data-action="filterChange" data-filter-name="${filter.name}" 
-                        class="bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-600 focus:ring-2 focus:ring-rose-400 outline-none transition-all">
-                    <option value="">Все</option>
+        wrapper.classList.remove('hidden');
+        container.innerHTML = config.dynamic_filters.map(filter => `
+            <div class="flex flex-col space-y-2">
+                <label class="text-[10px] font-bold text-slate-500 ml-1 uppercase">${filter.label}</label>
+                <select data-filter-name="${filter.name}" class="dynamic-sub-filter bg-slate-50 border-none rounded-xl px-4 py-3 text-xs font-bold text-slate-700 focus:ring-2 focus:ring-rose-400 outline-none transition-all cursor-pointer">
+                    <option value="">Любой</option>
                     ${filter.values.map(v => `<option value="${v}">${v}</option>`).join('')}
                 </select>
-            `;
-            container.appendChild(filterBlock);
-        });
+            </div>
+        `).join('');
     },
 
     openStatusModal(id, currentStatus, event) {

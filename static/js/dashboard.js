@@ -16,7 +16,6 @@ export const Actions = {
 
         activeFilters = {};
         currentCategoryId = categoryId;
-        
         UI.updateActiveCategoryBtn(categoryId);
 
         try {
@@ -24,18 +23,42 @@ export const Actions = {
 
             if (categoryId) {
                 const config = await API.fetchCategoryFilters(categoryId);
-                UI.renderDynamicFilters(config);
+                UI.renderDynamicFilters(config); 
             } else {
-                UI.hideSubFilters();
+                UI.renderDynamicFilters(null);
             }
 
             UI.renderCards(allCurrentIdeas, categoriesData);
-            console.log("Данные успешно загружены");
         } catch (error) {
-            console.error("Ошибка загрузки идей:", error);
+            console.error("Ошибка:", error);
         }
     },
 
+    applyFilters() {
+        let filtered = [...allCurrentIdeas];
+
+        const author = document.getElementById('filterAuthor').value;
+        if (author) {
+            filtered = filtered.filter(i => i.author === author);
+        }
+        const sortOrder = document.getElementById('sortDate').value;
+        filtered.sort((a, b) => {
+            const dateA = new Date(a.created_at || 0);
+            const dateB = new Date(b.created_at || 0);
+            return sortOrder === 'new' ? dateB - dateA : dateA - dateB;
+        });
+
+        const subFilters = document.querySelectorAll('.dynamic-sub-filter');
+        subFilters.forEach(select => {
+            const field = select.dataset.filterName;
+            const value = select.value;
+            if (value) {
+                filtered = filtered.filter(i => i.attributes && i.attributes[field] === value);
+            }
+        });
+
+        UI.renderCards(filtered, categoriesData);
+    },
 
     async handleDelete(id) {
         if (!confirm('Удалить эту идею?')) return;
@@ -76,8 +99,17 @@ export const Actions = {
     handleCloseDetail() {
         const shell = document.getElementById('appShell');
         if (shell) shell.classList.remove('is-detailed');
+        
         document.querySelectorAll('.idea-card').forEach(c => c.classList.remove('is-active'));
+        
+        const modal = document.getElementById('detailModal');
+        if (modal) {
+            modal.classList.add('hidden');
+        }
+        
+        UI.toggleModal('modal', false);
     },
+
 
     async handleSaveIdea(event) {
         event.preventDefault();

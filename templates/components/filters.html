@@ -1,13 +1,71 @@
-<div class="max-w-6xl mx-auto px-4 py-6 overflow-x-auto no-scrollbar">
-    <div class="flex space-x-3" id="categoryFilters">
-        <button data-id="" class="filter-btn px-6 py-2 bg-rose-500 text-white rounded-full shadow-md whitespace-nowrap transition-all">
-            Все
-        </button>
-    </div>
-</div>
-<div id="subFiltersWrapper" class="max-w-6xl mx-auto px-4 pb-4 hidden">
-    <div class="flex flex-wrap gap-2 items-center">
-        <div id="subFiltersContainer" class="flex flex-wrap gap-2">
+<div class="w-full bg-white border-b border-slate-100">
+    <div class="max-w-[1400px] mx-auto px-6 py-2 flex items-center justify-between gap-4 relative">
+        
+        <div class="flex-1 min-w-0 relative">
+            <div class="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none"></div>
+            
+            <div id="categoryFilters" class="flex items-center space-x-2 overflow-x-auto no-scrollbar py-1 px-4">
+                <button data-id="" class="filter-btn px-4 py-1.5 bg-rose-500 text-white rounded-full shadow-sm whitespace-nowrap transition-all font-bold text-[11px] uppercase tracking-wider">
+                    Все
+                </button>
+            </div>
+
+            <div class="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none"></div>
+        </div>
+
+        <div class="flex-shrink-0 flex items-center gap-2 relative">
+            
+            <div class="flex items-center bg-slate-50 border border-slate-100 p-1 rounded-xl h-10">
+                <button id="toggleFilters" class="flex items-center gap-2 px-3 py-1.5 text-slate-500 hover:text-rose-500 hover:bg-white rounded-lg transition-all group">
+                    <i class="fa-solid fa-sliders text-[10px] group-hover:rotate-90 transition-transform"></i>
+                    <span class="text-[10px] font-black uppercase tracking-widest">Фильтры</span>
+                </button>
+                
+                <div class="w-px h-4 bg-slate-200 mx-1"></div>
+
+                <div class="flex items-center space-x-1 px-1">
+                    <button id="setViewGrid" class="view-btn w-7 h-7 flex items-center justify-center rounded-md text-rose-500 bg-white shadow-sm transition-all">
+                        <i class="fa-solid fa-grip-vertical text-[10px]"></i>
+                    </button>
+                    <button id="setViewList" class="view-btn w-7 h-7 flex items-center justify-center rounded-md text-slate-300 hover:text-slate-500 transition-all">
+                        <i class="fa-solid fa-list-ul text-[10px]"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div id="extraFiltersPanel" class="hidden absolute top-full right-0 mt-3 w-80 md:w-[450px] bg-white shadow-[0_20px_60px_rgba(0,0,0,0.15)] rounded-[2.5rem] border border-slate-50 z-[100] animate-fadeIn">
+                <div class="p-8 max-h-[70vh] overflow-y-auto no-scrollbar">
+                    
+                    <div class="space-y-6">
+                        <h4 class="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">Основные настройки</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="flex flex-col space-y-2">
+                                <label class="text-[10px] font-bold text-slate-400 ml-2 uppercase">Дата</label>
+                                <select id="sortDate" class="bg-slate-50 border-none rounded-2xl px-4 py-3 text-xs font-bold text-slate-700 focus:ring-2 focus:ring-rose-400 outline-none">
+                                    <option value="new">Новые</option>
+                                    <option value="old">Старые</option>
+                                </select>
+                            </div>
+                            <div class="flex flex-col space-y-2">
+                                <label class="text-[10px] font-bold text-slate-400 ml-2 uppercase">Автор</label>
+                                <select id="filterAuthor" class="bg-slate-50 border-none rounded-2xl px-4 py-3 text-xs font-bold text-slate-700 focus:ring-2 focus:ring-rose-400 outline-none">
+                                    <option value="">Все</option>
+                                    <option value="admin">admin</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="subFiltersContainerWrapper" class="hidden pt-6 border-t border-slate-100 mt-6 space-y-4">
+                        <h4 class="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em]">Параметры категории</h4>
+                        <div id="subFiltersContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+                    </div>
+
+                    <button id="resetFilters" class="w-full py-4 text-[10px] font-black uppercase tracking-widest text-slate-300 hover:text-rose-500 transition-colors border-t border-slate-50 mt-4">
+                        Сбросить всё
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
