@@ -16,6 +16,7 @@ class Idea(Base):
     __tablename__ = "ideas"
     id = Column(Integer, primary_key=True, index=True)
     author_id = Column(Integer, ForeignKey("users.id"))
+    author = relationship("User") 
     title = Column(String, index=True)
     description = Column(Text)
     category_id = Column(Integer, ForeignKey("categories.id"))

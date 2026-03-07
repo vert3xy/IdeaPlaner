@@ -19,3 +19,5 @@ app.log
 .docker-compose.db.data/
 
 .DS_Store
+
+static/img

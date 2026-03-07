@@ -3,7 +3,7 @@ import sys
 from typing import Optional, List, Dict, Any
 
 from fastapi import FastAPI, Depends, HTTPException, status, Request
-from fastapi.responses import JSONResponse, HTMLResponse
+from fastapi.responses import JSONResponse, HTMLResponse, FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.templating import Jinja2Templates
@@ -74,3 +74,7 @@ async def login_page(request: Request):
 @app.get("/dashboard", response_class=HTMLResponse)
 async def dashboard_page(request: Request):
     return templates.TemplateResponse("dashboard.html", {"request": request})
+
+@app.get('/favicon.ico', include_in_schema=False)
+async def favicon():
+    return FileResponse('static/img/favicon.ico')

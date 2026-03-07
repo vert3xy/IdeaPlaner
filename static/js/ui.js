@@ -80,19 +80,16 @@ export const UI = {
         const attrHtml = (idea.attributes && cat.linked_attributes) ? cat.linked_attributes.map(attr => {
             const val = idea.attributes[attr.name];
             if (!val) return '';
-            return `
-                <div class="attr-row flex justify-between py-3 border-b border-slate-50 gap-4">
-                    <span class="attr-label text-[10px] font-bold text-slate-400 uppercase tracking-widest">${attr.label}</span>
-                    <span class="attr-value text-sm font-bold text-slate-700 text-right">${escapeHTML(formatValue(val))}</span>
-                </div>`;
+            return `<div class="flex justify-between items-center text-[10px] font-bold uppercase">
+                        <span class="text-slate-400 tracking-wider">${attr.label}</span>
+                        <span class="text-slate-700 bg-slate-100 px-2 py-0.5 rounded">${escapeHTML(formatValue(val))}</span>
+                    </div>`
         }).join('') : '';
 
         container.innerHTML = `
             <div class="animate-fadeIn max-w-6xl mx-auto">
-                <!-- HEADER: Новая структура (Mobile Friendly) -->
                 <div class="mb-8 pb-6 border-b border-slate-100">
                     
-                    <!-- 1. Верхний ряд: Категория + Кнопки -->
                     <div class="flex justify-between items-center mb-4">
                         <div class="flex items-center space-x-2">
                             <span class="text-[10px] font-bold text-rose-500 uppercase tracking-widest px-2 py-1 bg-rose-50 rounded-md">
@@ -102,12 +99,10 @@ export const UI = {
                         </div>
                         
                         <div class="flex items-center space-x-1">
-                            <!-- Удалить -->
                             <button data-action="delete" data-id="${idea.id}" 
                                     class="w-11 h-11 flex items-center justify-center text-slate-300 hover:text-rose-500 hover:bg-rose-50 rounded-full transition">
                                 <i class="fa-solid fa-trash-can text-base"></i>
                             </button>
-                            <!-- Закрыть -->
                             <button data-action="CloseSidePane" 
                                     class="w-11 h-11 flex items-center justify-center bg-slate-100 text-slate-500 hover:bg-slate-200 rounded-full transition">
                                 <i class="fa-solid fa-xmark text-xl" style="pointer-events: none;"></i>
@@ -115,12 +110,10 @@ export const UI = {
                         </div>
                     </div>
 
-                    <!-- 2. Средний ряд: Заголовок (теперь ему ничего не мешает) -->
                     <h2 class="text-3xl md:text-5xl font-black text-slate-900 leading-tight mb-5">
                         ${escapeHTML(idea.title)}
                     </h2>
 
-                    <!-- 3. Нижний ряд: Статус -->
                     <div class="flex items-center space-x-3">
                         <span class="px-3 py-1 ${s.color} text-white text-[10px] font-black rounded-full uppercase tracking-widest shadow-sm">
                             ${s.label}
@@ -132,10 +125,8 @@ export const UI = {
                     </div>
                 </div>
 
-                <!-- CONTENT GRID -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-10 lg:gap-16">
                     
-                    <!-- LEFT COLUMN: Описание и Фото -->
                     <div class="lg:col-span-2 space-y-10">
                         <div class="description-text">
                             "${escapeHTML(idea.description) || 'Описания нет...'}"
@@ -147,13 +138,12 @@ export const UI = {
                         </div>
                     </div>
 
-                    <!-- RIGHT COLUMN: Параметры и Метаданные -->
                     <div class="space-y-10">
                         <section>
                             <h4 class="text-[11px] font-black text-slate-900 uppercase tracking-widest mb-4 flex items-center">
                                 <span class="w-6 h-[1px] bg-rose-500 mr-2"></span> Параметры
                             </h4>
-                            <div class="space-y-1">${attrHtml || '<p class="text-slate-400 text-xs italic">Нет данных</p>'}</div>
+                            <div class="space-y-3">${attrHtml || '<p class="text-slate-400 text-xs italic">Нет данных</p>'}</div>
                         </section>
 
                         <section class="pt-8 border-t border-slate-100">
@@ -163,11 +153,15 @@ export const UI = {
                             <div class="space-y-3 text-[10px] font-bold uppercase">
                                 <div class="flex justify-between items-center">
                                     <span class="text-slate-400 tracking-wider">Автор</span>
-                                    <span class="text-slate-700 bg-slate-100 px-2 py-0.5 rounded">admin</span>
+                                    <span class="text-slate-700 bg-slate-100 px-2 py-0.5 rounded">${idea.author ? idea.author.username : 'system'}</span>
                                 </div>
                                 <div class="flex justify-between items-center">
                                     <span class="text-slate-400 tracking-wider">Создано</span>
-                                    <span class="text-slate-600">${new Date(idea.created_at || Date.now()).toLocaleDateString('ru-RU')}</span>
+                                    <span class="text-slate-600">${new Date(idea.created_at).toLocaleDateString('ru-RU', {
+                                                                        day: '2-digit',
+                                                                        month: '2-digit',
+                                                                        year: 'numeric'
+                                                                    })}</span>
                                 </div>
                             </div>
                         </section>
@@ -194,27 +188,76 @@ export const UI = {
     },
 
     renderDynamicFilters(config) {
-        const wrapper = document.getElementById('subFiltersContainerWrapper');
-        const container = document.getElementById('subFiltersContainer');
-        if (!wrapper || !container) return;
+        const commonContainer = document.getElementById('commonFiltersContainer');
+        const dynamicContainer = document.getElementById('subFiltersContainer');
+        const dynamicWrapper = document.getElementById('subFiltersContainerWrapper');
 
-        if (!config || !config.dynamic_filters || config.dynamic_filters.length === 0) {
-            container.innerHTML = '';
-            wrapper.classList.add('hidden');
+        if (!commonContainer || !dynamicContainer) return;
+
+        // Очистка
+        commonContainer.innerHTML = '';
+        dynamicContainer.innerHTML = '';
+
+        if (!config) {
+            dynamicWrapper?.classList.add('hidden');
             return;
         }
 
-        wrapper.classList.remove('hidden');
-        container.innerHTML = config.dynamic_filters.map(filter => `
-            <div class="flex flex-col space-y-2">
-                <label class="text-[10px] font-bold text-slate-500 ml-1 uppercase">${filter.label}</label>
-                <select data-filter-name="${filter.name}" class="dynamic-sub-filter bg-slate-50 border-none rounded-xl px-4 py-3 text-xs font-bold text-slate-700 focus:ring-2 focus:ring-rose-400 outline-none transition-all cursor-pointer">
-                    <option value="">Любой</option>
-                    ${filter.values.map(v => `<option value="${v}">${v}</option>`).join('')}
-                </select>
-            </div>
-        `).join('');
+        const createSelect = (filter, isCommon = false) => {
+            let options = `<option value="">Все</option>`;
+            
+            if (filter.name === 'created_at' || filter.type === 'date') {
+                return `
+                    <div class="flex flex-col space-y-2">
+                        <label class="text-[10px] font-bold text-slate-400 ml-2 uppercase tracking-wider">${filter.label}</label>
+                        <select name="sort" data-type="sort" class="filter-input bg-slate-50 border-none rounded-2xl px-4 py-3 text-xs font-bold text-slate-700 focus:ring-2 focus:ring-rose-400 outline-none">
+                            <option value="new">Сначала новые</option>
+                            <option value="old">Сначала старые</option>
+                        </select>
+                    </div>`;
+            }
+
+            if (filter.values) {
+                options += filter.values.map(v => {
+                    let displayLabel = v;
+                    if (filter.name === 'status' && statusMap[v]) {
+                        const rawLabel = statusMap[v].label;
+                        displayLabel = rawLabel.charAt(0).toUpperCase() + rawLabel.slice(1).toLowerCase();
+                    }
+                    
+                    return `<option value="${v}">${displayLabel}</option>`;
+                }).join('');
+            }
+
+            return `
+                <div class="flex flex-col space-y-2">
+                    <label class="text-[10px] font-bold text-slate-400 ml-2 uppercase tracking-wider">${filter.label}</label>
+                    <div class="relative">
+                        <select name="${filter.name}" data-type="${isCommon ? 'common' : 'attribute'}" 
+                                class="filter-input w-full bg-slate-50 border-none rounded-2xl px-4 py-3 text-xs font-bold text-slate-700 focus:ring-2 focus:ring-rose-400 outline-none appearance-none cursor-pointer hover:bg-slate-100 transition-colors">
+                            ${options}
+                        </select>
+                    </div>
+                </div>`;
+        };
+
+
+        if (config.common_filters) {
+            config.common_filters.forEach(f => {
+                commonContainer.insertAdjacentHTML('beforeend', createSelect(f, true));
+            });
+        }
+
+        if (config.dynamic_filters && config.dynamic_filters.length > 0) {
+            dynamicWrapper.classList.remove('hidden');
+            config.dynamic_filters.forEach(f => {
+                dynamicContainer.insertAdjacentHTML('beforeend', createSelect(f, false));
+            });
+        } else {
+            dynamicWrapper.classList.add('hidden');
+        }
     },
+
 
     openStatusModal(id, currentStatus, event) {
         if (event) event.stopPropagation();

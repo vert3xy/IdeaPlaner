@@ -21,44 +21,55 @@ export const Actions = {
         try {
             allCurrentIdeas = await API.fetchIdeas(categoryId); 
 
-            if (categoryId) {
-                const config = await API.fetchCategoryFilters(categoryId);
-                UI.renderDynamicFilters(config); 
-            } else {
-                UI.renderDynamicFilters(null);
-            }
+            const filterId = categoryId || 'all'; 
+            const config = await API.fetchCategoryFilters(filterId);
+            
+            UI.renderDynamicFilters(config); 
 
             UI.renderCards(allCurrentIdeas, categoriesData);
         } catch (error) {
-            console.error("Ошибка:", error);
+            console.error("Ошибка при загрузке:", error);
         }
     },
 
+
     applyFilters() {
         let filtered = [...allCurrentIdeas];
+        const inputs = document.querySelectorAll('.filter-input');
+        
+        let sortOrder = 'new';
 
-        const author = document.getElementById('filterAuthor').value;
-        if (author) {
-            filtered = filtered.filter(i => i.author === author);
-        }
-        const sortOrder = document.getElementById('sortDate').value;
+        inputs.forEach(input => {
+            const val = input.value;
+            const name = input.name;
+            const type = input.dataset.type;
+
+            if (!val && type !== 'sort') return;
+
+            if (type === 'sort') {
+                sortOrder = val;
+            } 
+            else if (type === 'common') {
+                if (name === 'author') {
+                    filtered = filtered.filter(i => i.author && i.author.username === val);
+                } else {
+                    filtered = filtered.filter(i => String(i[name]) === String(val));
+                }
+            } 
+            else if (type === 'attribute') {
+                filtered = filtered.filter(i => i.attributes && String(i.attributes[name]) === String(val));
+            }
+        });
+
         filtered.sort((a, b) => {
             const dateA = new Date(a.created_at || 0);
             const dateB = new Date(b.created_at || 0);
             return sortOrder === 'new' ? dateB - dateA : dateA - dateB;
         });
 
-        const subFilters = document.querySelectorAll('.dynamic-sub-filter');
-        subFilters.forEach(select => {
-            const field = select.dataset.filterName;
-            const value = select.value;
-            if (value) {
-                filtered = filtered.filter(i => i.attributes && i.attributes[field] === value);
-            }
-        });
-
         UI.renderCards(filtered, categoriesData);
     },
+
 
     async handleDelete(id) {
         if (!confirm('Удалить эту идею?')) return;

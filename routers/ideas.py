@@ -36,10 +36,10 @@ def get_ideas(
     db: Session = Depends(get_db),
     current_user: models.User = Depends(get_current_user)
 ):
-    query = db.query(models.Idea)
+    query = db.query(models.Idea).options(joinedload(models.Idea.author))
     if category_id:
         query = query.filter(models.Idea.category_id == category_id)
-    return query.all()
+    return query.order_by(models.Idea.created_at.desc()).all()
 
 @router.get("/{idea_id}", response_model=schemas.IdeaOut)
 def get_idea(idea_id: int, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):

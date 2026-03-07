@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime
 from typing import Optional, Any, Dict, List
 
 # --- Пользователи ---
@@ -73,6 +74,8 @@ class IdeaShort(BaseModel):
     status: str
     category_id: int
     attributes: Dict[str, Any]
+    created_at: datetime
+    author: UserOut
     
     class Config:
         from_attributes = True

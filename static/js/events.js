@@ -120,32 +120,26 @@ export function initEventListeners() {
     });
 
     document.addEventListener('click', (e) => {
-        if (filterPanel && !filterPanel.contains(e.target) && !toggleBtn.contains(e.target)) {
+        if (filterPanel && !filterPanel.contains(e.target) && !toggleBtn?.contains(e.target)) {
             filterPanel.classList.add('hidden');
         }
     });
 
-    ['sortDate', 'filterAuthor'].forEach(id => {
-        document.getElementById(id)?.addEventListener('change', () => Actions.applyFilters());
-    });
-
-    document.getElementById('subFiltersContainer')?.addEventListener('change', (e) => {
-        if (e.target.classList.contains('dynamic-sub-filter')) {
+    filterPanel?.addEventListener('change', (e) => {
+        if (e.target.tagName === 'SELECT' || e.target.classList.contains('filter-input')) {
             Actions.applyFilters();
         }
     });
 
     document.getElementById('resetFilters')?.addEventListener('click', () => {
-        const authorSelect = document.getElementById('filterAuthor');
-        const dateSelect = document.getElementById('sortDate');
-        
-        if (authorSelect) authorSelect.value = "";
-        if (dateSelect) dateSelect.value = "new";
-        
-        document.querySelectorAll('.dynamic-sub-filter').forEach(select => {
-            select.value = "";
+        const inputs = document.querySelectorAll('.filter-input');
+        inputs.forEach(input => {
+            if (input.dataset.type === 'sort') {
+                input.value = "new";
+            } else {
+                input.value = "";
+            }
         });
-
         Actions.applyFilters();
     });
 
