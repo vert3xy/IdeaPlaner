@@ -1,4 +1,5 @@
-import { Actions } from './dashboard.js';
+import { Actions, currentCategoryId } from './dashboard.js'; 
+import { UI } from './ui.js'; 
 
 export function initEventListeners() {
     const ideasGrid = document.getElementById('ideasGrid');
@@ -143,5 +144,12 @@ export function initEventListeners() {
         Actions.applyFilters();
     });
 
+    document.getElementById('cancelDeleteBtn')?.addEventListener('click', Actions.cancelDelete);
+    document.getElementById('confirmDeleteBtn')?.addEventListener('click', Actions.confirmDelete);
+    document.getElementById('deleteModal')?.addEventListener('click', (event) => {
+        if (event.target.id === 'deleteModal') {
+            Actions.cancelDelete();
+        }
+    });
 
 }

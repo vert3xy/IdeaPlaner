@@ -2,11 +2,12 @@ import { API } from './api.js';
 import { UI } from './ui.js';
 import { initEventListeners } from './events.js';
 
-let categoriesData = [];  
-let allCurrentIdeas = []; 
-let currentCategoryId = null;
+export let categoriesData = [];  
+export let allCurrentIdeas = []; 
+export let currentCategoryId = null;
 let currentActiveId = null;
 let activeFilters = {};
+let ideaToDeleteId = null; 
 
 export const Actions = {
     async handleLoadCategory(categoryId = null, force = false) {
@@ -71,18 +72,34 @@ export const Actions = {
     },
 
 
-    async handleDelete(id) {
-        if (!confirm('Удалить эту идею?')) return;
+    handleDelete(id) {
+        ideaToDeleteId = id;
+        UI.toggleModal('deleteModal', true);
+    },
+
+    async confirmDelete() {
+        if (!ideaToDeleteId) return;
+        
         try {
-            await API.deleteIdea(id);
-            UI.closeDetail();
+            await API.deleteIdea(ideaToDeleteId);
+            
+            UI.toggleModal('deleteModal', false);
+            UI.closeDetail(); 
             await Actions.handleLoadCategory(currentCategoryId, true);
-            console.log("Список обновлен после удаления");
+            
+            ideaToDeleteId = null;
+            
         } catch (e) { 
             console.error(e);
             alert("Ошибка при удалении: " + e.message); 
         }
     },
+
+    cancelDelete() {
+        ideaToDeleteId = null;
+        UI.toggleModal('deleteModal', false);
+    },
+
 
     handleOpenStatus(button, event) {
         currentActiveId = button.dataset.id;
@@ -104,21 +121,14 @@ export const Actions = {
         const idea = allCurrentIdeas.find(i => String(i.id) === String(id));
         if (idea) {
             UI.showDetail(idea, categoriesData);
+            UI.renderCards(allCurrentIdeas, categoriesData); 
         }
     },
 
     handleCloseDetail() {
         const shell = document.getElementById('appShell');
         if (shell) shell.classList.remove('is-detailed');
-        
-        document.querySelectorAll('.idea-card').forEach(c => c.classList.remove('is-active'));
-        
-        const modal = document.getElementById('detailModal');
-        if (modal) {
-            modal.classList.add('hidden');
-        }
-        
-        UI.toggleModal('modal', false);
+        UI.renderCards(allCurrentIdeas, categoriesData); 
     },
 
 
