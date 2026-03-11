@@ -1,0 +1,51 @@
+/* 1. Шапка детального вида */
+.detail-header {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 2rem;   /* 32px */
+    margin-bottom: 2.5rem; /* 40px */
+}
+
+/* 2. Строки атрибутов (параметры идеи) */
+.attr-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0.75rem 0;     /* 12px */
+    border-bottom: 1px solid var(--bg-main);
+    gap: 1.25rem;           /* 20px */
+}
+
+.attr-label {
+    font-size: 10px;
+    font-weight: 800;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.attr-value {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-main);
+    text-align: right;
+    word-break: break-word; 
+    max-width: 60%;       
+}
+
+/* 3. Текст описания идеи */
+.description-text {
+    font-size: 1.1rem; 
+    color: var(--text-muted);
+    line-height: 1.6;
+    border-left: 4px solid var(--primary-color); 
+    padding-left: 1.25rem; 
+    margin: 1.5rem 0;
+    font-weight: 400; 
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
+}
+
+.description-text p:first-child {
+    margin-top: 0;
+}

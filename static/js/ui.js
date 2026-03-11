@@ -264,13 +264,23 @@ export const UI = {
         const container = document.getElementById('statusOptions');
         if (!container) return;
 
-        container.innerHTML = Object.entries(statusMap).map(([key, val]) => `
-            <button data-action="selectStatus" data-status-key="${key}"  
-                class="w-full py-3 rounded-xl font-bold text-sm transition-all
-                ${currentStatus === key ? val.color + ' text-white shadow-lg scale-105' : 'bg-slate-50 text-slate-400 hover:bg-slate-100'}">
-                ${val.label}
-            </button>
-        `).join('');
+        container.innerHTML = Object.entries(statusMap).map(([key, val]) => {
+            const isActive = currentStatus === key;
+            return `
+                <button data-action="selectStatus" data-status-key="${key}"  
+                    class="w-full py-4 px-6 rounded-2xl font-bold text-sm transition-all flex items-center justify-between group
+                    ${isActive 
+                        ? val.color + ' text-white shadow-lg scale-[1.02]' 
+                        : 'bg-slate-50 text-slate-500 hover:bg-slate-100'}">
+                    
+                    <span class="uppercase tracking-wider">${val.label}</span>
+                    
+                    ${isActive 
+                        ? '<i class="fa-solid fa-check text-white"></i>' 
+                        : '<i class="fa-solid fa-chevron-right text-slate-300 group-hover:translate-x-1 transition-transform"></i>'}
+                </button>
+            `;
+        }).join('');
 
         this.toggleModal('statusModal', true);
     },

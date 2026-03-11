@@ -1,0 +1,21 @@
+/* Подключение шрифтов */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+    /* Основные цвета */
+    --primary-color: #f43f5e;
+    --primary-hover: #e11d48;
+    
+    /* Фоны и нейтральные оттенки */
+    --bg-main: #f8fafc;       
+    --bg-card: #ffffff;
+    
+    /* Цвета текста */
+    --text-main: #1e293b;    
+    --text-muted: #64748b;      
+    --text-light: #94a3b8;      
+
+    /* Бордеры и тени */
+    --border-color: #f1f5f9; 
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}

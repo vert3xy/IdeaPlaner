@@ -128,9 +128,11 @@ export const Actions = {
     handleCloseDetail() {
         const shell = document.getElementById('appShell');
         if (shell) shell.classList.remove('is-detailed');
+        
+        UI.closeDetail(); 
+        
         UI.renderCards(allCurrentIdeas, categoriesData); 
     },
-
 
     async handleSaveIdea(event) {
         event.preventDefault();

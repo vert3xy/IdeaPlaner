@@ -46,27 +46,27 @@ export function initEventListeners() {
     });
 
     document.getElementById('detailModal')?.addEventListener('click', (event) => {
-        const element = event.target.closest('[data-action]');
-        
-        if (!element) {
-            if (event.target.id === 'detailModal') {
-                Actions.handleCloseDetail();
-            }
+        const element = event.target.closest('[data-action]');     
+
+        if (!element && event.target.id === 'detailModal') {
+            event.preventDefault(); 
+            Actions.handleCloseDetail();
             return;
         }
 
+        if (!element) return;
+
+        event.preventDefault(); 
         const action = element.dataset.action;
         const id = element.dataset.id;
 
-        event.preventDefault();
-
         if (action === 'delete') Actions.handleDelete(id);
         if (action === 'openStatus') Actions.handleOpenStatus(element, event);
-        
-        if (action === 'CloseSidePane' || action === 'CloseDetail' || action === 'closeStatus') {
+        if (action === 'CloseSidePane' || action === 'CloseDetail') {
             Actions.handleCloseDetail();
         }
     });
+
 
     document.getElementById('statusModal')?.addEventListener('click', (event) => {
         const btn = event.target.closest('[data-status-key]');

@@ -1,0 +1,57 @@
+/* 1. Глобальный сброс */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);; 
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+/* 2. Формы и интерактив */
+input:focus, 
+textarea:focus, 
+select:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.15);
+}
+
+/* 3. Кастомные скроллбары */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 10px;
+    transition: background 0.3s;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-light); 
+}
+
+/* 4. Утилитарный класс для скрытия скроллбара */
+.no-scrollbar {
+    -ms-overflow-style: none;  /* IE и Edge */
+    scrollbar-width: none;     /* Firefox */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;             /* Chrome, Safari, Opera */
+}

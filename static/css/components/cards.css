@@ -1,0 +1,84 @@
+/* 1. Базовая карточка (Сетка) */
+.idea-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 2rem;
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: fadeIn 0.4s ease-out forwards;
+    position: relative;
+}
+
+.idea-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    border-color: rgba(244, 63, 94, 0.2);
+}
+
+/* ЭЛЕМЕНТЫ В СЕТКЕ */
+.idea-index-badge {
+    display: none !important;
+}
+
+.idea-id-tag {
+    margin-left: 8px; 
+}
+
+
+/* 2. РЕЖИМ СПИСКА (is-detailed) */
+#appShell.is-detailed .idea-card {
+    flex-direction: row !important;
+    align-items: center !important;
+    padding: 14px 20px !important;
+    border: none !important;
+    border-bottom: 1px solid var(--bg-main) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+#appShell.is-detailed .idea-index-badge {
+    display: flex !important; 
+    margin-right: 12px;     
+}
+
+#appShell.is-detailed .idea-card p,
+#appShell.is-detailed .idea-card .cat-label,
+#appShell.is-detailed .idea-card button,
+#appShell.is-detailed .idea-card .mt-auto,
+#appShell.is-detailed .idea-card .justify-between:not(:has(.idea-id-tag)) {
+    display: none !important;
+}
+
+/* Заголовок в списке */
+#appShell.is-detailed .idea-card h3 {
+    font-size: 14px !important;
+    margin: 0 0 0 12px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+
+/* 3. АКТИВНАЯ КАРТОЧКА */
+.idea-card.is-active {
+    background-color: var(--primary-color) !important;
+}
+
+.idea-card.is-active h3,
+.idea-card.is-active .idea-id-tag {
+    color: white !important;
+    opacity: 1;
+}
+
+.idea-card.is-active .idea-index-badge {
+    background-color: white !important;
+    color: var(--primary-color) !important;
+}
+
+#appShell.is-detailed .idea-card:hover:not(.is-active) {
+    background-color: #fff1f2;
+}

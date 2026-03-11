@@ -1,0 +1,60 @@
+/* 1. Базовый стиль для статусов (Новое, В планах и т.д.) */
+.badge-status {
+    padding: 4px 10px;
+    font-size: 9px;
+    font-weight: 900;
+    border-radius: 8px;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+/* Цвета статусов */
+.status-new { background-color: #0ea5e9; }      /* Sky 500 */
+.status-planned { background-color: #f59e0b; }  /* Amber 500 */
+.status-done { background-color: #10b981; }     /* Emerald 500 */
+.status-rejected { background-color: #f43f5e; } /* Rose 500 */
+
+
+/* 2. Категорийная метка (маленькая плашка с иконкой) */
+.cat-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    background-color: #eef2ff;
+    color: #6366f1;       
+    font-size: 10px;
+    font-weight: 700;
+    border-radius: 9999px;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+}
+
+
+/* 3. Порядковый номер (Index Badge) */
+.idea-index-badge {
+    /* Базовый вид кружка */
+    background-color: var(--text-main);
+    color: white;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    font-size: 10px;
+    font-weight: 900;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.idea-id-tag {
+    font-family: 'JetBrains Mono', monospace; 
+    font-weight: 800;
+    font-size: 10px;
+    color: var(--text-light);
+    opacity: 0.6;
+}

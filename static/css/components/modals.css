@@ -1,0 +1,27 @@
+.modal-backdrop {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+body.modal-open {
+    overflow: hidden;
+    padding-right: 6px; 
+}
+
+#detailContent, #addForm {
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+}
+
+.modal-container {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+#statusOptions button {
+    outline: none !important;
+    border: none;
+}
+
+#statusOptions button:active {
+    transform: scale(0.98);
+}

@@ -1,0 +1,100 @@
+/* 1. Главный контейнер приложения */
+#appShell {
+    display: flex;
+    height: calc(100vh - 142px);
+    overflow: hidden;
+    background-color: var(--bg-card);
+    position: relative;
+}
+
+/* 2. Левая область (Список/Сетка идей) */
+#masterView {
+    flex: 1;
+    overflow-y: auto;
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 1.5rem; /* 24px */
+}
+
+/* 3. Правая панель (Детальный просмотр) */
+#sideDetailPane { 
+    width: 0;
+    opacity: 0;
+    visibility: hidden;
+    background-color: var(--bg-card);
+    border-left: 1px solid var(--border-color);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+}
+
+/* 4. ЛОГИКА ТРАНСФОРМАЦИИ (Когда открыта панель .is-detailed) */
+
+#appShell.is-detailed #masterView {
+    flex: none;
+    width: 350px;
+    padding: 0;
+    border-right: 1px solid var(--border-color);
+}
+
+#appShell.is-detailed #sideDetailPane {
+    flex: 1;
+    width: auto;
+    opacity: 1;
+    visibility: visible;
+}
+
+#appShell.is-detailed #ideasGrid {
+    display: flex !important;
+    flex-direction: column !important;
+    grid-template-columns: none !important;
+    gap: 0 !important;
+    padding: 0 !important;
+}
+
+/* 5. Внутренний контент правой панели */
+#sideDetailContent {
+    padding: 2rem !important; /* 32px */
+}
+
+#sideDetailContent h2 {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+/* 6. АДАПТИВНОСТЬ */
+
+/* Десктопная версия (от 1024px) */
+@media (min-width: 1024px) {
+    #appShell.is-detailed #masterView {
+        flex: 0 0 350px;
+        padding: 0; 
+        border-right: 1px solid #f1f5f9;
+    }
+
+    #appShell.is-detailed #sideDetailPane {
+        width: auto;
+        flex: 1;
+        opacity: 1;
+        visibility: visible;
+    }
+
+    #appShell.is-detailed .idea-card {
+        border-radius: 0 !important;
+        border: none !important;
+        border-bottom: 1px solid #f8fafc !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+        padding: 16px 20px !important;
+    }
+}
+
+
+@media (max-width: 1023px) {
+    #sideDetailPane {
+        display: none !important;
+    }
+    #appShell.is-detailed #masterView {
+        flex: 1; 
+    }
+}
