@@ -1,84 +1,193 @@
-/* 1. Базовая карточка (Сетка) */
+/* --- 1. ГЛАВНАЯ СЕТКА (Обзор) --- */
+#ideasGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
 .idea-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 24px;
     display: flex;
     flex-direction: column;
-    background-color: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 2rem;
-    padding: 1.5rem;
+    transition: var(--transition);
+    min-height: 200px;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    animation: fadeIn 0.4s ease-out forwards;
-    position: relative;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, opacity; 
 }
 
 .idea-card:hover {
     transform: translateY(-4px);
-    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-    border-color: rgba(244, 63, 94, 0.2);
+    border-color: var(--primary-color);
 }
 
-/* ЭЛЕМЕНТЫ В СЕТКЕ */
-.idea-index-badge {
-    display: none !important;
+/* В ГРИДЕ индикатор (иконка/номер) скрыт, так как там есть большая плашка сверху */
+.idea-card .indicator-container { display: none; }
+
+.card-title {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--text-main);
+    line-height: 1.2;
 }
 
-.idea-id-tag {
-    margin-left: 8px; 
+.card-desc {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    margin: 10px 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.go-arrow {
+    width: 36px;
+    height: 36px;
+    background: #f1f5f9;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    transition: all 0.3s ease; 
+}
+
+.idea-card:hover .go-arrow {
+    transform: translateX(4px);
+    background: var(--primary);
+    color: white;
 }
 
 
-/* 2. РЕЖИМ СПИСКА (is-detailed) */
+/* --- 2. БОКОВАЯ ПАНЕЛЬ (Сайдбар) --- */
+
 #appShell.is-detailed .idea-card {
     flex-direction: row !important;
-    align-items: center !important;
-    padding: 14px 20px !important;
-    border: none !important;
-    border-bottom: 1px solid var(--bg-main) !important;
+    padding: 12px 20px !important;
+    min-height: 52px !important;
     border-radius: 0 !important;
-    box-shadow: none !important;
+    border: none !important;
+    border-bottom: 1px solid #f8fafc !important;
+    background: transparent !important;
 }
 
-#appShell.is-detailed .idea-index-badge {
-    display: flex !important; 
-    margin-right: 12px;     
-}
-
-#appShell.is-detailed .idea-card p,
-#appShell.is-detailed .idea-card .cat-label,
-#appShell.is-detailed .idea-card button,
-#appShell.is-detailed .idea-card .mt-auto,
-#appShell.is-detailed .idea-card .justify-between:not(:has(.idea-id-tag)) {
+#appShell.is-detailed .grid-only,
+#appShell.is-detailed .card-desc,
+#appShell.is-detailed .card-footer {
     display: none !important;
 }
 
-/* Заголовок в списке */
-#appShell.is-detailed .idea-card h3 {
-    font-size: 14px !important;
-    margin: 0 0 0 12px !important;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 200px;
+#appShell.is-detailed .indicator-container {
+    display: flex !important;
+    margin-right: 12px;
+    width: 24px;
+    justify-content: center;
+    flex-shrink: 0; 
+    position: relative;
+    z-index: 5;
 }
 
+/* ЛОГИКА КОНТЕКСТА: ВСЕ vs КАТЕГОРИЯ */
 
-/* 3. АКТИВНАЯ КАРТОЧКА */
-.idea-card.is-active {
-    background-color: var(--primary-color) !important;
+/* Если "Все" -> Видим ИКОНКУ */
+#appShell.is-detailed.is-all-view .indicator-icon { display: block !important; font-size: 1.1rem; }
+#appShell.is-detailed.is-all-view .indicator-number { display: none !important; }
+
+/* Если "Категория" -> Видим ЦИФРУ */
+#appShell.is-detailed:not(.is-all-view) .indicator-icon { display: none !important; }
+#appShell.is-detailed:not(.is-all-view) .indicator-number {
+    display: flex !important;
+    width: 24px;
+    height: 24px;
+    background: #f1f5f9; 
+    color: #64748b;
+    font-size: 10px;
+    font-weight: 800;
+    border-radius: 8px; 
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e2e8f0;
+    transition: var(--transition);
 }
 
-.idea-card.is-active h3,
-.idea-card.is-active .idea-id-tag {
+#appShell.is-detailed .card-title {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    color: var(--text-muted);
+}
+
+/* --- 3. АКТИВНОЕ СОСТОЯНИЕ (ВЫДЕЛЕНИЕ) --- */
+
+#appShell.is-detailed .idea-card.is-active {
+    background: #fffafa !important;
+    box-shadow: inset 4px 0 0 var(--primary) !important;
+}
+
+#appShell.is-detailed .idea-card.is-active .card-title {
+    color: var(--primary) !important;
+    font-weight: 800 !important;
+}
+
+#appShell.is-detailed .idea-card.is-active .indicator-number {
+    background: var(--primary) !important;
     color: white !important;
-    opacity: 1;
+    border-color: var(--primary) !important;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(244, 63, 94, 0.2);
 }
 
-.idea-card.is-active .idea-index-badge {
-    background-color: white !important;
-    color: var(--primary-color) !important;
+#appShell.is-detailed.is-all-view .idea-card.is-active .indicator-icon {
+    transform: scale(1.1);
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
 }
 
-#appShell.is-detailed .idea-card:hover:not(.is-active) {
-    background-color: #fff1f2;
+/* --- 4. РЕЖИМ СПИСКА (List View) --- */
+
+/* Когда у контейнера есть этот класс, сетка превращается в одну колонку */
+#ideasGrid.view-list {
+    grid-template-columns: 1fr !important;
+    gap: 12px;
+}
+
+#ideasGrid.view-list .idea-card {
+    flex-direction: row !important;
+    align-items: center;
+    padding: 16px 24px !important;
+    min-height: 70px !important;
+    gap: 20px;
+}
+
+#ideasGrid.view-list .card-desc {
+    margin: 0;
+    display: -webkit-box; 
+    -webkit-box-orient: vertical; 
+    -webkit-line-clamp: 1;
+    line-clamp: 1; 
+    flex: 1;
+    overflow: hidden; 
+}
+#ideasGrid.view-list .grid-only {
+    margin-bottom: 0 !important;
+    width: auto;
+    gap: 12px;
+}
+
+#ideasGrid.view-list .card-header-main {
+    min-width: 250px;
+}
+
+#ideasGrid.view-list .card-footer {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+    border: none !important;
+}
+
+#ideasGrid.view-list .go-arrow {
+    width: 32px;
+    height: 32px;
 }

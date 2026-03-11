@@ -16,22 +16,34 @@ export const Actions = {
         }
 
         activeFilters = {};
+        
         currentCategoryId = categoryId;
         UI.updateActiveCategoryBtn(categoryId);
+        
+        const shell = document.getElementById('appShell');
+        if (categoryId && categoryId !== "") {
+            shell.classList.remove('is-all-view'); 
+        } else {
+            shell.classList.add('is-all-view');    
+        }
 
         try {
             allCurrentIdeas = await API.fetchIdeas(categoryId); 
-
             const filterId = categoryId || 'all'; 
             const config = await API.fetchCategoryFilters(filterId);
             
             UI.renderDynamicFilters(config); 
-
             UI.renderCards(allCurrentIdeas, categoriesData);
         } catch (error) {
             console.error("Ошибка при загрузке:", error);
         }
     },
+
+    handleSwitchView(mode) {
+        UI.setViewMode(mode);
+        Actions.applyFilters();
+    },
+
 
 
     applyFilters() {
@@ -126,6 +138,7 @@ export const Actions = {
     },
 
     handleCloseDetail() {
+        UI.currentActiveId = null;
         const shell = document.getElementById('appShell');
         if (shell) shell.classList.remove('is-detailed');
         

@@ -1,20 +1,77 @@
-/* 1. Шапка детального вида */
-.detail-header {
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 2rem;   /* 32px */
-    margin-bottom: 2.5rem; /* 40px */
+.detail-container {
+    max-width: 900px;
+    margin: 0 auto;
 }
 
-/* 2. Строки атрибутов (параметры идеи) */
-.attr-row {
+.detail-title {
+    font-size: 3rem;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    margin-bottom: 24px;
+}
+
+.description-box {
+    background: #f8fafc;
+    padding: 24px 32px; 
+    border-radius: 20px;
+    font-size: 1.2rem; 
+    color: var(--text-main);
+    border-left: 4px solid var(--primary-color);
+    margin: 20px 0 32px 0;
+}
+
+.params-grid {
+    display: grid;
+    gap: 16px;
+}
+
+.param-item {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    padding: 0.75rem 0;     /* 12px */
-    border-bottom: 1px solid var(--bg-main);
-    gap: 1.25rem;           /* 20px */
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
 }
 
+.param-label {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--text-light);
+    text-transform: uppercase;
+}
+
+.param-value {
+    font-weight: 700;
+    background: white;
+    padding: 4px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+}
+
+.description-text {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--text-main);
+    line-height: 1.5;
+    margin: 40px 0;
+    padding: 0;
+    border: none;
+}
+
+
+.description-text::before,
+.description-text::after {
+    display: none;
+}
+
+/* Заголовок в детальном виде */
+#sideDetailContent h2 {
+    font-size: 2.5rem; 
+    font-weight: 900;
+    margin-bottom: 16px;
+}
+
+/* Параметры (справа) */
 .attr-label {
     font-size: 10px;
     font-weight: 800;
@@ -24,28 +81,10 @@
 }
 
 .attr-value {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 700;
+    background: #f1f5f9;
+    padding: 2px 8px;
+    border-radius: 6px;
     color: var(--text-main);
-    text-align: right;
-    word-break: break-word; 
-    max-width: 60%;       
-}
-
-/* 3. Текст описания идеи */
-.description-text {
-    font-size: 1.1rem; 
-    color: var(--text-muted);
-    line-height: 1.6;
-    border-left: 4px solid var(--primary-color); 
-    padding-left: 1.25rem; 
-    margin: 1.5rem 0;
-    font-weight: 400; 
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    white-space: pre-wrap;
-}
-
-.description-text p:first-child {
-    margin-top: 0;
 }

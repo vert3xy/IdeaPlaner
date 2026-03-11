@@ -1,69 +1,85 @@
 import { statusMap, formatValue, escapeHTML } from './utils.js';
 
 export const UI = {
-    currentViewMode: 'grid', 
+    currentViewMode: 'grid',
+    currentActiveId: null,  
 
     renderCards(ideas, categoriesData) {
         const grid = document.getElementById('ideasGrid');
         if (!grid) return;
-        grid.innerHTML = '';
+        grid.classList.remove('view-transition');
+        const mode = window.innerWidth < 1024 ? 'grid' : this.currentViewMode;
+        grid.className = mode === 'list' ? 'view-list' : '';
 
-        if (ideas.length === 0) {
-            grid.innerHTML = `
-                <div class="col-span-full text-center py-20">
-                    <div class="text-4xl mb-4">💡</div>
-                    <p class="text-slate-400 font-medium">В этой категории пока нет идей...</p>
-                </div>
-            `;
-            return;
-        }
+        void grid.offsetWidth; 
+        grid.classList.add('view-transition');
+        grid.innerHTML = '';
+        this.updateViewButtons(mode);
 
         ideas.forEach((idea, index) => {
             const card = document.createElement('div');
-
             const cat = categoriesData.find(c => Number(c.id) === Number(idea.category_id)) || {};
-            const s = statusMap[idea.status] || { label: idea.status, color: 'bg-slate-500' };
-
+            const s = statusMap[idea.status] || { label: idea.status };
+            
+            const isActive = String(idea.id) === String(this.currentActiveId);
             const orderNumber = index + 1;
 
-            card.className = "idea-card cursor-pointer bg-white p-6 rounded-[2rem] shadow-sm border border-slate-100 hover:shadow-xl transition-all relative group flex flex-col";
-            
-
+            card.className = `idea-card ${isActive ? 'is-active' : ''}`;
             card.dataset.action = 'showDetail';
             card.dataset.id = idea.id;
 
             card.innerHTML = `
-                <div class="flex justify-between items-start mb-4">
-                    <span class="px-3 py-1 bg-indigo-50 text-indigo-500 text-[10px] font-bold rounded-full uppercase tracking-tighter">
-                        <span class="cat-label">${cat.icon || '💡'} ${cat.label || 'Идея'}</span>
-                    </span>
-                    <button data-action="openStatus" data-id="${idea.id}" data-status="${idea.status}" 
-                            class="px-2.5 py-1 ${s.color} text-white text-[9px] font-black rounded-lg uppercase tracking-tighter">
-                        ${s.label}
-                    </button>
+                <!-- Блок только для ГРИДА -->
+                <div class="grid-only flex justify-between items-start mb-4">
+                    <div class="cat-tag-pill">
+                        <span>${cat.icon || '💡'}</span>
+                        <span>${cat.label}</span>
+                    </div>
+                    <span class="status-pill ${idea.status.toLowerCase()}">${s.label}</span>
                 </div>
 
-                <div class="flex items-center mb-2">
-                    <span class="idea-index-badge">${orderNumber}</span>
-                    <h3 class="text-lg font-bold text-slate-800 leading-tight group-hover:text-rose-500 transition-colors">
-                        ${escapeHTML(idea.title)}
-                    </h3>
+                <!-- Блок ЗАГОЛОВКА (Работает и в гриде, и в сайдбаре) -->
+                <div class="card-header-main flex items-center">
+                    <div class="indicator-container">
+                        <span class="indicator-icon">${cat.icon || '💡'}</span>
+                        <span class="indicator-number">${orderNumber}</span>
+                    </div>
+                    <h3 class="card-title">${escapeHTML(idea.title)}</h3>
                 </div>
 
-                <p class="text-slate-500 text-xs mb-4 line-clamp-3 leading-relaxed">
-                    ${escapeHTML(idea.description) || 'Нет описания'}
-                </p>
-                <div class="flex items-center text-rose-500 text-[10px] font-black uppercase tracking-wider mt-auto pt-2">
-                    <span>Подробнее</span>
-                    <i class="fa-solid fa-arrow-right ml-2 transition-transform group-hover:translate-x-1"></i>
+                <!-- Блок ОПИСАНИЯ (Скрывается в сайдбаре) -->
+                <p class="card-desc">${escapeHTML(idea.description) || 'Описания пока нет...'}</p>
+                
+                <!-- ФУТЕР (Скрывается в сайдбаре) -->
+                <div class="card-footer mt-auto flex justify-between items-center pt-4">
+                    <span class="text-[10px] font-bold text-slate-300 tracking-widest">#${idea.id}</span>
+                    <div class="go-arrow">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </div>
                 </div>
             `;
-
             grid.appendChild(card);
         });
     },
 
+    updateViewButtons(mode) {
+        const gridBtn = document.getElementById('setViewGrid');
+        const listBtn = document.getElementById('setViewList');
+        
+        if (!gridBtn || !listBtn) return;
+
+        [gridBtn, listBtn].forEach(btn => {
+            btn.classList.remove('text-rose-500', 'bg-white', 'shadow-sm');
+            btn.classList.add('text-slate-300');
+        });
+
+        const activeBtn = mode === 'grid' ? gridBtn : listBtn;
+        activeBtn.classList.add('text-rose-500', 'bg-white', 'shadow-sm');
+        activeBtn.classList.remove('text-slate-300');
+    },
+
     showDetail(idea, categoriesData) {
+        this.currentActiveId = idea.id;
         const isMobile = window.innerWidth < 1024;
         const targetContainerId = isMobile ? 'detailContent' : 'sideDetailContent';
         const container = document.getElementById(targetContainerId);
@@ -73,6 +89,7 @@ export const UI = {
 
         document.querySelectorAll('.idea-card').forEach(c => c.classList.remove('is-active'));
         document.querySelector(`.idea-card[data-id="${idea.id}"]`)?.classList.add('is-active');
+        
 
         const cat = categoriesData.find(c => Number(c.id) === Number(idea.category_id)) || {};
         const s = statusMap[idea.status] || { label: idea.status, color: 'bg-slate-800' };
