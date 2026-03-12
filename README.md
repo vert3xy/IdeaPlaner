@@ -31,11 +31,3 @@
 ├── static/                 # Frontend: Vanilla JS & CSS
 ├── templates/              # Jinja2 HTML шаблоны
 └── docs/                   # Аналитическая документация
-
-## 🚀 Быстрый старт (Local Development)
-
-git clone <url_репозитория>
-
-pip install -r requirements.txt
-
-uvicorn main:app --reload
