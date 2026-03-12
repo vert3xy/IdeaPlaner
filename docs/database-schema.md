@@ -1,3 +1,6 @@
+# 🗄️ Схема базы данных
+
+```mermaid
 erDiagram
     USERS {
         int id PK
@@ -9,8 +12,8 @@ erDiagram
         int id PK
         string title
         text description
-        string status "new, planned, done, rejected"
-        json attributes "Динамические атрибуты"
+        string status
+        json attributes
         datetime created_at
         datetime updated_at
         int author_id FK
@@ -32,8 +35,8 @@ erDiagram
     }
     
     CATEGORY_ATTRIBUTE_LINKS {
-        int category_id PK, FK
-        int attribute_id PK, FK
+        int category_id PK
+        int attribute_id PK
     }
 
     USERS ||--o{ IDEAS : "creates"
