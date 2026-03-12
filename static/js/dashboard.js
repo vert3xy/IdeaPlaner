@@ -188,8 +188,21 @@ export const Actions = {
 async function startApp() {
     try {
         const user = await API.fetchMe();
+        
+        // 1. Отображаем имя пользователя
         const display = document.getElementById('userNameDisplay');
         if (user && display) display.innerText = `Привет, ${user.username}!`;
+
+        // --- ДОБАВЬ ЭТОТ БЛОК ---
+        // 2. Проверка роли админа для отображения ссылки в навбаре
+        if (user && user.role === 'admin') {
+            const adminLink = document.getElementById('adminLink');
+            if (adminLink) {
+                adminLink.classList.remove('hidden');
+                adminLink.classList.add('flex'); // Убедись, что иконка и текст стоят в ряд
+            }
+        }
+        // ------------------------
 
         categoriesData = await API.fetchCategories(); 
         UI.initCategoryInterface(categoriesData);
@@ -199,7 +212,7 @@ async function startApp() {
         await Actions.handleLoadCategory(null);
 
     } catch (error) {
-        if (error.message === "UNAUTHORIZED") {
+        if (error.message === "UNAUTHORIZED" || error.message.includes("401")) {
             localStorage.removeItem('token'); 
             window.location.href = '/login';  
         } else {

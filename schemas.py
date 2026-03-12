@@ -2,6 +2,19 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import Optional, Any, Dict, List
 
+class AuditLogOut(BaseModel):
+    id: int
+    user_id: Optional[int]
+    username: Optional[str]  
+    action: str
+    resource_type: str
+    resource_id: Optional[int]
+    details: Optional[Dict[str, Any]]
+    timestamp: datetime
+
+    class Config:
+        from_attributes = True
+
 # --- Пользователи ---
 class UserCreate(BaseModel):
     username: str
@@ -10,8 +23,22 @@ class UserCreate(BaseModel):
 class UserOut(BaseModel):
     id: int
     username: str
+    role: str
+    is_active: bool
     class Config:
         from_attributes = True
+
+class UserRoleUpdate(BaseModel):
+    role: str # admin, moderator, user
+
+class UserSearch(BaseModel):
+    id: int
+    username: str
+    class Config:
+        from_attributes = True
+
+class UserStatusUpdate(BaseModel):
+    is_active: bool
 
 # --- Токены ---
 class Token(BaseModel):
@@ -67,6 +94,12 @@ class IdeaUpdate(BaseModel):
 class StatusUpdate(BaseModel):
     status: str # new, planned, done, rejected
 
+class IdeaPermissions(BaseModel):
+    can_edit: bool
+    can_delete: bool
+    can_share: bool
+    can_change_status: bool
+
 class IdeaShort(BaseModel):
     id: int
     title: str
@@ -76,6 +109,7 @@ class IdeaShort(BaseModel):
     attributes: Dict[str, Any]
     created_at: datetime
     author: UserOut
+    permissions: IdeaPermissions
     
     class Config:
         from_attributes = True
@@ -85,7 +119,7 @@ class FilterOption(BaseModel):
     name: str   
     label: str  
     type: str   
-    values: List[str]
+    values: List[Any]
 
 class CategoryFilterConfig(BaseModel):
     category_id: int

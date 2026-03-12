@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Управление - IdPN{% endblock %}
+
+{% block content %}
+<!-- Проверка доступа прямо при загрузке -->
+<script type="module">
+    import { API } from '/static/js/api.js';
+    const user = await API.fetchMe();
+    if (!user || user.role !== 'admin') window.location.href = '/dashboard';
+</script>
+
+<div class="flex flex-col h-screen bg-slate-50 overflow-hidden">
+    <!-- Тот же навбар -->
+    <header class="flex-none bg-white border-b border-slate-100 z-50">
+        {% include "components/navbar.html" %}
+    </header>
+
+    <!-- Подзаголовок и табы в стиле твоих фильтров -->
+    <section class="flex-none bg-white border-b border-slate-100 px-6 py-4">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <a href="/dashboard" class="group flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-rose-500 transition-all mb-4">
+                    <i class="fa-solid fa-arrow-left transition-transform group-hover:-translate-x-1"></i>
+                    <span>ВЕРНУТЬСЯ К ИДЕЯМ</span>
+                </a>
+                <h1 class="text-3xl font-bold text-slate-800">Панель управления</h1>
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mt-1">Администрирование системы</p>
+            </div>
+            
+            <div class="flex bg-slate-100 p-1 rounded-2xl w-fit">
+                <button id="tabUsers" class="px-6 py-2 rounded-xl text-sm font-bold transition-all bg-white text-rose-500 shadow-sm">
+                    👤 Пользователи
+                </button>
+                <button id="tabLogs" class="px-6 py-2 rounded-xl text-sm font-bold transition-all text-slate-500 hover:text-rose-500">
+                    📜 Логи аудита
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Основной контент -->
+    <main class="flex-1 overflow-y-auto p-6 bg-slate-50">
+        <div class="max-w-6xl mx-auto">
+            
+            <!-- Секция пользователей -->
+            <div id="usersSection" class="animate-fadeIn">
+                <div class="bg-white rounded-[2rem] border border-slate-100 shadow-sm overflow-hidden">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50/50 border-b border-slate-100">
+                            <tr>
+                                <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">ID</th>
+                                <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Пользователь</th>
+                                <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Роль</th>
+                                <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">Статус</th>
+                                <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest text-right">Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersList" class="divide-y divide-slate-50">
+                            <!-- Контент из JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Секция логов -->
+            <div id="logsSection" class="hidden animate-fadeIn space-y-4">
+                <div id="logsList" class="grid grid-cols-1 gap-3">
+                    <!-- Контент из JS (карточки логов) -->
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<script type="module" src="/static/js/admin.js"></script>
+{% endblock %}

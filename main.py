@@ -16,7 +16,7 @@ from jose import jwt, JWTError
 import models, schemas, auth
 from database import engine, get_db, Base
 
-from routers import ideas, auth, categories
+from routers import ideas, auth, categories, users, audit
 from auth import get_current_user
 
 logging.basicConfig(
@@ -48,6 +48,8 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 app.include_router(ideas.router)
 app.include_router(auth.router)
 app.include_router(categories.router)
+app.include_router(users.router) 
+app.include_router(audit.router)
 
 Base.metadata.create_all(bind=engine)
 
@@ -74,6 +76,10 @@ async def login_page(request: Request):
 @app.get("/dashboard", response_class=HTMLResponse)
 async def dashboard_page(request: Request):
     return templates.TemplateResponse("dashboard.html", {"request": request})
+
+@app.get("/admin", response_class=HTMLResponse)
+async def admin_page(request: Request):
+    return templates.TemplateResponse("admin.html", {"request": request})
 
 @app.get('/favicon.ico', include_in_schema=False)
 async def favicon():

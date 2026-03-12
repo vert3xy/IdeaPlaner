@@ -1,14 +1,24 @@
-    <nav class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-20">
-        <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <img src="/static/img/icon.png" alt="Logo" class="w-8 h-8 object-contain">
-                <h1 class="text-2xl font-bold bg-gradient-to-r from-rose-500 to-orange-400 bg-clip-text text-transparent">
-                    IdPN
-                </h1>
-            </div>
+<!-- START OF FILE navbar.html -->
+<nav class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-20">
+    <div class="max-w-6xl mx-auto px-4 py-4 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+            <img src="/static/img/icon.png" alt="Logo" class="w-8 h-8 object-contain">
+            <h1 class="text-2xl font-bold bg-gradient-to-r from-rose-500 to-orange-400 bg-clip-text text-transparent">
+                IdPN
+            </h1>
+        </div>
+
+        <div class="flex items-center gap-6"> 
+            <a id="adminLink" href="/admin" class="hidden items-center gap-2 text-sm font-bold text-rose-500 hover:text-rose-600 transition-all">
+                <i class="fa-solid fa-user-shield"></i>
+                <span class="hidden md:inline">Панель управления</span>
+            </a>
+
             <span id="userNameDisplay" class="text-sm font-medium text-slate-500"></span>
+            
             <button id="logoutBtn" class="p-2 text-slate-400 hover:text-rose-500 transition">
                 <i class="fa-solid fa-right-from-bracket text-xl"></i>
             </button>
         </div>
-    </nav>
+    </div>
+</nav>

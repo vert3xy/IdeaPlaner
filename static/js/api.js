@@ -41,6 +41,8 @@ async function makeRequest(url, options = {}) {
 export const API = {
     fetchMe: () => makeRequest('/users/me'),
 
+    fetchAllUsers: () => makeRequest('/users/'),
+
     fetchCategories: () => makeRequest('/categories'),
 
     fetchIdeas(catId = null) {
@@ -51,6 +53,18 @@ export const API = {
     fetchCategoryFilters(catId) {
         return makeRequest(`/categories/${catId}/filters`);
     },
+
+    updateUserRole: (userId, role) => makeRequest(`/users/${userId}/role`, {
+        method: 'PATCH',
+        body: JSON.stringify({ role })
+    }),
+
+    updateUserStatus: (userId, isActive) => makeRequest(`/users/${userId}/status`, {
+        method: 'PATCH',
+        body: JSON.stringify({ is_active: isActive })
+    }),
+
+    fetchAuditLogs: (limit = 50) => makeRequest(`/audit/logs?limit=${limit}`),
 
     saveIdea: (payload) => makeRequest('/ideas/', {
         method: 'POST',

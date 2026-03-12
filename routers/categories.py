@@ -48,7 +48,8 @@ def get_category_filters(cat_id: str, db: Session = Depends(get_db)):
             func.json_extract(models.Idea.attributes, f'$.{attr.name}').label("val")
         ).filter(models.Idea.category_id == category_int_id).distinct()
         
-        values = [row.val for row in query.all() if row.val]
+        values = [str(row.val) for row in query.all() if row.val is not None]
+        values = list(set(values))
 
         dynamic_filters.append({
             "name": attr.name, "label": attr.label, "type": attr.type, "values": values
