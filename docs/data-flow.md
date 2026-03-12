@@ -6,41 +6,43 @@
 
 Данная диаграмма показывает, как процессы (обработка) взаимодействуют с внешними сущностями (пользователь) и хранилищами данных.
 
+## 📊 DFD Level 1: Архитектура процессов
+
 ```mermaid
 graph TD
     %% Акторы
-    User((👤 Пользователь))
+    User((Пользователь))
 
     %% Процессы
-    subgraph Server [Backend Engine (FastAPI)]
-        P1[P1: Auth & Security]
-        P2[P2: Idea Processor]
-        P3[P3: Filter Engine]
+    subgraph Server ["Backend Engine FastAPI"]
+        P1["P1: Auth and Security"]
+        P2["P2: Idea Processor"]
+        P3["P3: Filter Engine"]
     end
 
     %% Хранилища
-    DB[(🗄️ SQLite DB)]
-    Logs[(📄 App Log)]
+    DB[(SQLite DB)]
+    Logs[(App Log)]
 
     %% Потоки данных
-    User -->|Логин / Пароль| P1
-    P1 <-->|Проверка учетных данных| DB
-    P1 -->|JWT Токен| User
+    User --> P1
+    P1 <--> DB
+    P1 --> User
 
-    User -->|JSON: IdeaCreate| P2
-    P2 -->|Проверка токена| P1
-    P2 -->|SQL: Insert JSON attributes| DB
-    DB -->|Объект идеи| P2
-    P2 -->|JSON: IdeaOut| User
+    User --> P2
+    P2 --> P1
+    P2 --> DB
+    DB --> P2
+    P2 --> User
 
-    User -->|Выбор категории| P3
-    P3 -->|SQL: JSON Extract / Distinct| DB
-    DB -->|Уникальные значения| P3
-    P3 -->|JSON: FilterConfig| User
+    User --> P3
+    P3 --> DB
+    DB --> P3
+    P3 --> User
 
     %% Логирование
-    P1 -.->|Security Events| Logs
-    P2 -.->|Runtime Errors| Logs
+    P1 -.-> Logs
+    P2 -.-> Logs
 ```
 
 ---
