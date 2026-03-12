@@ -147,3 +147,4 @@ graph LR
   "estimated_hours": 40,
   "is_open_source": true
 }
+```
