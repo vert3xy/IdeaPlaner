@@ -9,40 +9,37 @@
 ## 📊 DFD Level 1: Архитектура процессов
 
 ```mermaid
-graph TD
-    %% Акторы
-    User((Пользователь))
-
-    %% Процессы
-    subgraph Server ["Backend Engine FastAPI"]
-        P1["P1: Auth and Security"]
-        P2["P2: Idea Processor"]
-        P3["P3: Filter Engine"]
+graph LR
+    %% Определение сущностей
+    User((👤 Пользователь))
+    
+    subgraph Backend ["FastAPI Backend Engine"]
+        direction TB
+        P1["P1: Auth & JWT"]
+        P2["P2: Idea CRUD"]
+        P3["P3: Filter Service"]
     end
 
-    %% Хранилища
-    DB[(SQLite DB)]
-    Logs[(App Log)]
+    DB[(🗄️ SQLite Database)]
+    Logs[(📄 System Logs)]
 
-    %% Потоки данных
-    User --> P1
-    P1 <--> DB
-    P1 --> User
+    %% Потоки данных (Линейная логика)
+    User -->|Ввод данных| P1
+    User -->|JSON Payload| P2
+    User -->|Выбор категории| P3
 
-    User --> P2
-    P2 --> P1
-    P2 --> DB
-    DB --> P2
-    P2 --> User
+    P1 <-->|Проверка| DB
+    P2 -->|SQL Insert/Update| DB
+    P3 -->|JSON Extract SQL| DB
 
-    User --> P3
-    P3 --> DB
-    DB --> P3
-    P3 --> User
+    DB -.->|Data Out| P2
+    DB -.->|Values| P3
+
+    P2 -->|JSON Response| User
+    P3 -->|Config| User
 
     %% Логирование
-    P1 -.-> Logs
-    P2 -.-> Logs
+    Backend -.->|Events| Logs
 ```
 
 ---
