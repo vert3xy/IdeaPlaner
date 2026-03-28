@@ -39,3 +39,41 @@
 .view-btn:hover {
     color: var(--primary-color);
 }
+
+.auth-btn-primary {
+    background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+    color: white;
+    border-radius: 16px;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 14px 45px;
+    text-transform: uppercase;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 10px 25px -5px rgba(244, 63, 94, 0.4);
+    transition: all 0.3s ease;
+}
+
+.auth-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px -5px rgba(244, 63, 94, 0.5);
+    filter: brightness(1.1);
+}
+
+.auth-btn-ghost {
+    background-color: transparent;
+    border: 2px solid #ffffff;
+    border-radius: 14px;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 800;
+    padding: 12px 45px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.auth-btn-ghost:hover {
+    background-color: white;
+    color: var(--primary);
+}

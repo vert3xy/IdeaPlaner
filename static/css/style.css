@@ -7,6 +7,7 @@
 @import "components/modals.css";
 @import "components/badges.css";
 
+@import "layout/auth.css";  
 @import "layout/navbar.css";
 @import "layout/filters.css"; 
 @import "layout/shell.css";   
